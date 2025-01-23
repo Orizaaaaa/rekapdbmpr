@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+.swiper-pagination-bullet {
+    background-color: #D9D9D9 !important;
+    width: 12px !important;
+    height: 12px !important;
+    opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: #FFFFFF !important;
+    width: 12px !important;
+    height: 12px !important;
+    /* Ubah warna latar belakang bullet aktif */
+}
