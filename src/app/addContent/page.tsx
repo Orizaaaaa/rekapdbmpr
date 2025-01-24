@@ -18,7 +18,7 @@ const page = (props: Props) => {
     const [form, setForm] = React.useState({
         name: [] as File[],
         link: '',
-        deskription: ''
+        description: ''
     })
     const [errorMsg, setErrorMsg] = React.useState({
         image: '',
@@ -108,7 +108,7 @@ const page = (props: Props) => {
 
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: any) => {
         const { name, value } = e.target;
         setForm({ ...form, [name]: value });
     }
@@ -163,8 +163,8 @@ const page = (props: Props) => {
 
                 </div>
 
-                <InputForm className='border-2 ' onChange={handleChange} value={form.deskription} placeholder='Masukan Link' htmlFor='link' type='text' />
-                <textarea placeholder='Masukan Deskripsi postingan di sini' name="description" id="description" cols={30} rows={4}
+                <InputForm className='border-2 ' onChange={handleChange} value={form.link} placeholder='Masukan Link' htmlFor='link' type='text' />
+                <textarea onChange={handleChange} placeholder='Masukan Deskripsi postingan di sini' name="description" id="description" cols={30} rows={4} value={form.description}
                     className="block p-2.5 w-full border-2  rounded-md outline-none " ></textarea>
                 <div className="flex justify-end mt-4">
                     <ButtonPrimary className='py-1 px-4 rounded-lg '>Kirim</ButtonPrimary>

@@ -94,7 +94,7 @@ const page = (props: Props) => {
 
             <div className="my-4">
                 <div className="grid grid-cols-4">
-                    <CardPost image='https://www.deheus.id/siteassets/animal-nutrition/swine/de-heus-animal-nutrition_animals_swines_-pigs_sows_in_stables-1.jpg' typePost='tiktok' text='Lorem ipsum, dolor sit amet consectetur adipisicing elit...' />
+                    <CardPost image='https://akcdn.detik.net.id/visual/2021/02/25/mark-zuckerbergbritannicacom_11.jpeg?w=480&q=90' typePost='tiktok' text='Lorem ipsum, dolor sit amet consectetur adipisicing elit...' />
                 </div>
 
             </div>
