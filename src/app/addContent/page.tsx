@@ -10,12 +10,15 @@ import { SwiperSlide } from 'swiper/react'
 import { camera } from '../image'
 import ButtonPrimary from '@/components/elements/buttonPrimary'
 import { IoCloseCircleOutline } from 'react-icons/io5'
+import InputForm from '@/components/elements/input/InputForm'
 
 type Props = {}
 
 const page = (props: Props) => {
     const [form, setForm] = React.useState({
         name: [] as File[],
+        link: '',
+        deskription: ''
     })
     const [errorMsg, setErrorMsg] = React.useState({
         image: '',
@@ -104,6 +107,11 @@ const page = (props: Props) => {
         }
 
     };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setForm({ ...form, [name]: value });
+    }
     return (
         <DefaultLayout>
             <Card padding='p-3'>
@@ -117,7 +125,7 @@ const page = (props: Props) => {
                     </ButtonSecondary>
                 </div>
 
-                <div className="content mt-4">
+                <div className="content mt-4 mb-2">
                     <CaraoselImage>
                         {form.name.length > 0 ? (
                             form.name.map((image, index) => (
@@ -142,7 +150,7 @@ const page = (props: Props) => {
 
                     </CaraoselImage>
                     <div className="grid grid-cols-2 justify-between mt-5 gap-2">
-                        <ButtonPrimary className='rounded-md relative cursor-pointer py-2 px-1' >Tambah Image
+                        <ButtonPrimary className='rounded-md relative cursor-pointer py-2 px-1' >Tambah Konten
                             <input
                                 type="file"
                                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
@@ -155,9 +163,9 @@ const page = (props: Props) => {
 
                 </div>
 
-
+                <InputForm className='border-2 ' onChange={handleChange} value={form.deskription} placeholder='Masukan Link' htmlFor='link' type='text' />
                 <textarea placeholder='Masukan Deskripsi postingan di sini' name="description" id="description" cols={30} rows={4}
-                    className="block p-2.5 w-full border-2  rounded-md outline-none mt-2" ></textarea>
+                    className="block p-2.5 w-full border-2  rounded-md outline-none " ></textarea>
                 <div className="flex justify-end mt-4">
                     <ButtonPrimary className='py-1 px-4 rounded-lg '>Kirim</ButtonPrimary>
                 </div>
