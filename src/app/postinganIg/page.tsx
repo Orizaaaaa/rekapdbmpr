@@ -23,6 +23,7 @@ import ModalDefault from '@/components/fragemnts/modal/modal'
 import Image from 'next/image'
 import { ig } from '../image'
 import { BsTicketDetailed } from "react-icons/bs";
+import CardPost from '@/components/fragemnts/cardPost/CardPost'
 
 interface DropdownItem {
     label: string;
@@ -328,33 +329,7 @@ const JurnalUmum = () => {
             </Card>
             <div className="my-4">
                 <div className="grid grid-cols-4">
-                    <div className={`rounded-lg bg-white shadow-default dark:border-strokedark `}>
-                        <div className=" rounded-full p-2">
-                            <div className='h-65 w-full relative'>
-                                <img className='w-full h-full rounded-lg' src="https://i.pinimg.com/564x/28/e1/00/28e1001977c0a8cb5d7292a0db63d84a.jpg" alt="" />
-                            </div>
-
-                            <div className="content w-full">
-                                <p className='text-sm'>Lorem ipsum dolor sit amet consectetur adipisicin..</p>
-                                <div className="flex justify-between items-center my-3">
-                                    <div className="w-10 h-10">
-                                        <Image className='w-full h-full' src={ig} alt="dashboard" />
-                                    </div>
-                                    <h1 className='py-2 px-4 bg-black text-white text-sm rounded-full'>View</h1>
-                                </div>
-
-                                <div className="flex justify-between  bg-slate-900 rounded-lg  p-3">
-                                    <IoCloudDownloadOutline color='white' size={24} />
-                                    <IoLinkSharp color='white' size={24} />
-                                    <CiEdit color='white' size={24} />
-
-                                </div>
-
-                            </div>
-
-
-                        </div>
-                    </div>
+                    <CardPost image='https://www.deheus.id/siteassets/animal-nutrition/swine/de-heus-animal-nutrition_animals_swines_-pigs_sows_in_stables-1.jpg' typePost='ig' text='Lorem ipsum, dolor sit amet consectetur adipisicing elit...' />
                 </div>
 
             </div>
