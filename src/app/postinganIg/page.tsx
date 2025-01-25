@@ -12,12 +12,7 @@ import { parseDate } from '@internationalized/date'
 import { dateFirst, formatDate, formatDateStr } from '@/utils/helper'
 import useSWR from 'swr'
 import { fetcher } from '@/api/fetcher'
-import { IoClose } from 'react-icons/io5'
 import { url } from '@/api/auth'
-import { AiOutlinePlusCircle } from 'react-icons/ai'
-import { postImage } from '@/api/imagePost'
-import ModalDefault from '@/components/fragemnts/modal/modal'
-import Image from 'next/image'
 import CardPost from '@/components/fragemnts/cardPost/CardPost'
 
 interface DropdownItem {

@@ -20,13 +20,14 @@ const CardPost = ({ image, text, typePost }: Props) => {
 
                 <div className="content w-full">
                     <p className='text-sm'>{text}</p>
+
                     <div className="flex justify-between items-center my-3">
                         <div className="w-10 h-10">
                             {typePost === 'ig' ? <Image className='w-full h-full' src={ig} alt="" />
                                 : <Image className='w-full h-full' src={tiktok} alt="" />}
 
                         </div>
-                        <h1 className='py-2 px-4 bg-black text-white text-sm rounded-full'>View</h1>
+                        <button className='py-2 px-4 bg-black text-white text-sm rounded-full'>View</button>
                     </div>
 
                     <div className="flex justify-between  bg-slate-900 rounded-lg  p-3">
