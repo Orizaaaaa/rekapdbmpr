@@ -112,6 +112,9 @@ const page = (props: Props) => {
         const { name, value } = e.target;
         setForm({ ...form, [name]: value });
     }
+
+    console.log(errorMsg);
+
     return (
         <DefaultLayout>
             <Card padding='p-3'>

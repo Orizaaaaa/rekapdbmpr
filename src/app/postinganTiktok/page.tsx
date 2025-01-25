@@ -19,9 +19,9 @@ import CardPost from '@/components/fragemnts/cardPost/CardPost'
 type Props = {}
 
 const page = (props: Props) => {
-    const { data } = useSWR(`${url}/account/list`, fetcher, {
-        keepPreviousData: true,
-    });
+    // const { data } = useSWR(`${url}/account/list`, fetcher, {
+    //     keepPreviousData: true,
+    // });
     const dateNow = new Date();
     const [selectedDate, setSelectedDate] = useState(parseDate((formatDate(dateNow))))
     let [date, setDate] = React.useState({
@@ -49,12 +49,7 @@ const page = (props: Props) => {
     });
 
 
-    React.useEffect(() => {
-        setForm((prevForm) => ({
-            ...prevForm,
-            journal_date: formatDateStr(selectedDate),
-        }));
-    }, [selectedDate]);
+
 
     const handleDownload = () => {
         downloadJurnal(startDate, endDate, (result: any) => {
