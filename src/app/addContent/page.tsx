@@ -2,7 +2,6 @@
 import ButtonSecondary from '@/components/elements/buttonSecondary'
 import Card from '@/components/elements/card/Card'
 import CaraoselImage from '@/components/fragemnts/caraoselProduct/caraoselProduct'
-import EditorContent from '@/components/fragemnts/editorContent/EditorContent'
 import DefaultLayout from '@/components/layouts/DefaultLayout'
 import Image from 'next/image'
 import React from 'react'
@@ -14,7 +13,7 @@ import InputForm from '@/components/elements/input/InputForm'
 
 type Props = {}
 
-const page = (props: Props) => {
+const Page = (props: Props) => {
     const [form, setForm] = React.useState({
         name: [] as File[],
         link: '',
@@ -178,4 +177,4 @@ const page = (props: Props) => {
     )
 }
 
-export default page
+export default Page
