@@ -11,6 +11,7 @@ import { Card, DateRangePicker, useDisclosure } from '@nextui-org/react'
 import React, { useState } from 'react'
 
 import CardPost from '@/components/fragemnts/cardPost/CardPost'
+import { useRouter } from 'next/navigation'
 
 type Props = {}
 
@@ -18,7 +19,7 @@ const Page = (props: Props) => {
     // const { data } = useSWR(`${url}/account/list`, fetcher, {
     //     keepPreviousData: true,
     // });
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const router = useRouter()
     const dateNow = new Date();
     let [date, setDate] = React.useState({
         start: parseDate((formatDate(dateFirst))),
@@ -52,10 +53,6 @@ const Page = (props: Props) => {
         });
     };
 
-    const openModal = () => {
-        onOpen()
-    }
-
     return (
 
         <DefaultLayout>
@@ -75,14 +72,11 @@ const Page = (props: Props) => {
 
             <div className="my-4">
                 <div className="grid grid-cols-4">
-                    <CardPost modalKlik={openModal} image='https://akcdn.detik.net.id/visual/2021/02/25/mark-zuckerbergbritannicacom_11.jpeg?w=480&q=90' typePost='tiktok' text='Lorem ipsum, dolor sit amet consectetur adipisicing elit...' />
+                    <CardPost buttonView={() => router.push('/postinganTiktok/8')}
+                        image='https://akcdn.detik.net.id/visual/2021/02/25/mark-zuckerbergbritannicacom_11.jpeg?w=480&q=90' typePost='tiktok' text='Lorem ipsum, dolor sit amet consectetur adipisicing elit...' />
                 </div>
 
             </div>
-
-            <ModalDefault isOpen={isOpen} onClose={onClose}>
-                <p>ini modal anjeng</p>
-            </ModalDefault>
 
         </DefaultLayout>
 
