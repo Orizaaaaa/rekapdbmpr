@@ -8,9 +8,10 @@ type Props = {
     image: string
     text: string
     typePost: string
+    modalKlik?: any
 }
 
-const CardPost = ({ image, text, typePost }: Props) => {
+const CardPost = ({ image, text, typePost, modalKlik }: Props) => {
     return (
         <div className={`rounded-lg bg-white shadow-default dark:border-strokedark `}>
             <div className=" rounded-full p-2">
@@ -27,7 +28,7 @@ const CardPost = ({ image, text, typePost }: Props) => {
                                 : <Image className='w-full h-full' src={tiktok} alt="" />}
 
                         </div>
-                        <button className='py-2 px-4 bg-black text-white text-sm rounded-full'>View</button>
+                        <button onClick={modalKlik} className='py-2 px-4 bg-black text-white text-sm rounded-full'>View</button>
                     </div>
 
                     <div className="flex justify-between  bg-slate-900 rounded-lg  p-3">

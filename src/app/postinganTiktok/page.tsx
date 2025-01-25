@@ -7,7 +7,7 @@ import ModalDefault from '@/components/fragemnts/modal/modal'
 import DefaultLayout from '@/components/layouts/DefaultLayout'
 import { dateFirst, formatDate, formatDateStr } from '@/utils/helper'
 import { parseDate } from '@internationalized/date'
-import { Card, DateRangePicker } from '@nextui-org/react'
+import { Card, DateRangePicker, useDisclosure } from '@nextui-org/react'
 import React, { useState } from 'react'
 
 import CardPost from '@/components/fragemnts/cardPost/CardPost'
@@ -18,6 +18,7 @@ const Page = (props: Props) => {
     // const { data } = useSWR(`${url}/account/list`, fetcher, {
     //     keepPreviousData: true,
     // });
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const dateNow = new Date();
     let [date, setDate] = React.useState({
         start: parseDate((formatDate(dateFirst))),
@@ -50,6 +51,11 @@ const Page = (props: Props) => {
             }
         });
     };
+
+    const openModal = () => {
+        onOpen()
+    }
+
     return (
 
         <DefaultLayout>
@@ -69,10 +75,14 @@ const Page = (props: Props) => {
 
             <div className="my-4">
                 <div className="grid grid-cols-4">
-                    <CardPost image='https://akcdn.detik.net.id/visual/2021/02/25/mark-zuckerbergbritannicacom_11.jpeg?w=480&q=90' typePost='tiktok' text='Lorem ipsum, dolor sit amet consectetur adipisicing elit...' />
+                    <CardPost modalKlik={openModal} image='https://akcdn.detik.net.id/visual/2021/02/25/mark-zuckerbergbritannicacom_11.jpeg?w=480&q=90' typePost='tiktok' text='Lorem ipsum, dolor sit amet consectetur adipisicing elit...' />
                 </div>
 
             </div>
+
+            <ModalDefault isOpen={isOpen} onClose={onClose}>
+                <p>ini modal anjeng</p>
+            </ModalDefault>
 
         </DefaultLayout>
 
