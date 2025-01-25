@@ -8,22 +8,17 @@ import DefaultLayout from '@/components/layouts/DefaultLayout'
 import { dateFirst, formatDate, formatDateStr } from '@/utils/helper'
 import { parseDate } from '@internationalized/date'
 import { Card, DateRangePicker } from '@nextui-org/react'
-import Image from 'next/image'
 import React, { useState } from 'react'
-import { CiEdit } from 'react-icons/ci'
-import { IoCloudDownloadOutline, IoLinkSharp } from 'react-icons/io5'
-import useSWR from 'swr'
-import { ig } from '../image'
+
 import CardPost from '@/components/fragemnts/cardPost/CardPost'
 
 type Props = {}
 
-const page = (props: Props) => {
+const Page = (props: Props) => {
     // const { data } = useSWR(`${url}/account/list`, fetcher, {
     //     keepPreviousData: true,
     // });
     const dateNow = new Date();
-    const [selectedDate, setSelectedDate] = useState(parseDate((formatDate(dateNow))))
     let [date, setDate] = React.useState({
         start: parseDate((formatDate(dateFirst))),
         end: parseDate((formatDate(dateNow))),
@@ -32,21 +27,6 @@ const page = (props: Props) => {
     const startDate = formatDateStr(date.start);
     const endDate = formatDateStr(date.end);
 
-    const [form, setForm] = useState({
-        name: '',
-        image: null as File | null,
-        journal_date: formatDateStr(selectedDate),
-        detail: [
-            {
-                account: '',
-                debit: 0, // Updated to number
-                credit: 0, // Updated to number
-                note: "This is a note for the journal entry."
-            },
-        ],
-        data_change: false,
-        note: "This is a note for the journal entry."
-    });
 
 
 
@@ -94,14 +74,9 @@ const page = (props: Props) => {
 
             </div>
 
-
-
-
-
-
         </DefaultLayout>
 
     )
 }
 
-export default page
+export default Page
