@@ -1,5 +1,6 @@
 'use client'
 import { ig, tiktok } from '@/app/image'
+import { handleCopy } from '@/utils/helper'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -36,7 +37,7 @@ const CardPost = ({ image, text, typePost, buttonView }: Props) => {
 
                     <div className="flex justify-between  bg-slate-900 rounded-lg  p-3">
                         <IoCloudDownloadOutline color='white' size={24} />
-                        <IoLinkSharp color='white' size={24} />
+                        <IoLinkSharp className='cursor-pointer' color='white' size={24} onClick={() => handleCopy('https://akcdn.detik.net.id/visual/2021/02/25/mark-zuckerbergbritannicacom_11.jpeg?w=480&q=90')} />
                         <CiEdit className='cursor-pointer' onClick={() => router.push('contents/editContent/1')} color='white' size={24} />
                     </div>
 

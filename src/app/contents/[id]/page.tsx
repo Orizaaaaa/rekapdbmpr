@@ -12,6 +12,7 @@ import { FaRegTrashAlt } from 'react-icons/fa'
 import { PiTrashLight } from "react-icons/pi";
 import { FaFilePen } from 'react-icons/fa6'
 import { IoCloudDownloadOutline, IoLinkSharp } from 'react-icons/io5'
+import { handleCopy } from '@/utils/helper'
 
 type Props = {}
 
@@ -22,6 +23,7 @@ const Page = (props: Props) => {
     const openModalDelete = () => {
         onWarningOpen()
     }
+
     return (
         <DefaultLayout>
             <Card>
@@ -36,7 +38,7 @@ const Page = (props: Props) => {
 
                         <div className="flex justify-between  bg-slate-900 rounded-lg mt-4 p-3">
                             <IoCloudDownloadOutline color='white' size={24} />
-                            <IoLinkSharp color='white' size={24} />
+                            <IoLinkSharp className='cursor-pointer' color='white' size={24} onClick={() => handleCopy('https://akcdn.detik.net.id/visual/2021/02/25/mark-zuckerbergbritannicacom_11.jpeg?w=480&q=90')} />
                             <CiEdit className='cursor-pointer' onClick={() => router.push('editContent/1')} color='white' size={24} />
                             <PiTrashLight className='cursor-pointer' onClick={openModalDelete} color='white' size={24} />
                         </div>

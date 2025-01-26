@@ -209,7 +209,7 @@ const ChartLine: React.FC = () => {
                             <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-[#80CAEE]"></span>
                         </span>
                         <div className="w-full">
-                            <p className="font-semibold text-primary">Total Pendapatan</p>
+                            <p className="font-semibold text-primary">Total Postingan</p>
                             <p className="text-sm font-medium"> {formatDate(startOfYear)} - {formatDate(endOfYear)}</p>
                         </div>
                     </div>
@@ -218,7 +218,7 @@ const ChartLine: React.FC = () => {
                             <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-red"></span>
                         </span>
                         <div className="w-full">
-                            <p className="font-semibold text-red">Total Pengeluaran</p>
+                            <p className="font-semibold text-red">Total User</p>
                             <p className="text-sm font-medium"> {formatDate(startOfYear)} - {formatDate(endOfYear)}</p>
                         </div>
                     </div>

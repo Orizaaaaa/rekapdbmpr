@@ -14,6 +14,17 @@ export const formatDate = (tanggal: any) => {
     return `${tahun}-${bulan}-${hari}`;
 };
 
+export const handleCopy = (link: string) => {
+    const linkToCopy = link;
+    navigator.clipboard.writeText(linkToCopy)
+        .then(() => {
+            alert("Link berhasil disalin ke clipboard!");
+        })
+        .catch(() => {
+            alert("Gagal menyalin link.");
+        });
+};
+
 export function formatCatrgory(text: string, maxLength: number = 34): string {
     if (text.length > maxLength) {
         return text.slice(0, maxLength) + "...";

@@ -17,7 +17,7 @@ const Dashboard: React.FC = () => {
 
     const getImage = (name: string) => {
         switch (name.toLowerCase()) {
-            case "Total postingan saat ini":
+            case "Total postingan bulan ini":
                 return money;
             case "semua pemasukan":
                 return yellowDolar;
