@@ -5,6 +5,7 @@ import DefaultLayout from '@/components/layouts/DefaultLayout'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { CiEdit } from 'react-icons/ci'
+import { FaRegTrashAlt } from 'react-icons/fa'
 import { FaFilePen } from 'react-icons/fa6'
 import { IoCloudDownloadOutline, IoLinkSharp } from 'react-icons/io5'
 
@@ -28,6 +29,7 @@ const Page = (props: Props) => {
                             <IoCloudDownloadOutline color='white' size={24} />
                             <IoLinkSharp color='white' size={24} />
                             <CiEdit className='cursor-pointer' onClick={() => router.push('editContent/1')} color='white' size={24} />
+                            <FaRegTrashAlt color='white' size={24} />
                         </div>
 
 
