@@ -57,8 +57,8 @@ const Page = (props: Props) => {
 
         <DefaultLayout>
             <Card className='p-3'>
-                <h1 className='text-xl font-medium '>Postingan Tiktok</h1>
-                <p className='text-slate-500 text-small mb-3' >Semua postingan tiktok akan ter rekap di sini, saat ini total postingan tiktok adalah 89</p>
+                <h1 className='text-xl font-medium '>Postingan </h1>
+                <p className='text-slate-500 text-small mb-3' >Semua postingan akan ter rekap di sini, saat ini total postingan adalah 89</p>
                 <div className="space-y-3 lg:space-y-0 lg:flex  justify-end gap-2 mt-3 lg:mt-0">
                     <ButtonSecondary onClick={handleDownload} className=' px-4 rounded-md'>Download dalam bentuk Excel</ButtonSecondary>
                     <DateRangePicker
