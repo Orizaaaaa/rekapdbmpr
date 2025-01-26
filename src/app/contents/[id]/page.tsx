@@ -1,11 +1,15 @@
 'use client'
+import ButtonPrimary from '@/components/elements/buttonPrimary'
 import Card from '@/components/elements/card/Card'
 import CardBox from '@/components/fragemnts/cardBox/CardBox'
+import ModalAlert from '@/components/fragemnts/modal/modalAlert'
 import DefaultLayout from '@/components/layouts/DefaultLayout'
+import { useDisclosure } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { CiEdit } from 'react-icons/ci'
 import { FaRegTrashAlt } from 'react-icons/fa'
+import { PiTrashLight } from "react-icons/pi";
 import { FaFilePen } from 'react-icons/fa6'
 import { IoCloudDownloadOutline, IoLinkSharp } from 'react-icons/io5'
 
@@ -13,6 +17,11 @@ type Props = {}
 
 const Page = (props: Props) => {
     const router = useRouter()
+    // delete article
+    const { isOpen: isWarningOpen, onOpen: onWarningOpen, onClose: onWarningClose } = useDisclosure();
+    const openModalDelete = () => {
+        onWarningOpen()
+    }
     return (
         <DefaultLayout>
             <Card>
@@ -29,7 +38,7 @@ const Page = (props: Props) => {
                             <IoCloudDownloadOutline color='white' size={24} />
                             <IoLinkSharp color='white' size={24} />
                             <CiEdit className='cursor-pointer' onClick={() => router.push('editContent/1')} color='white' size={24} />
-                            <FaRegTrashAlt color='white' size={24} />
+                            <PiTrashLight className='cursor-pointer' onClick={openModalDelete} color='white' size={24} />
                         </div>
 
 
@@ -39,8 +48,17 @@ const Page = (props: Props) => {
                 </div>
             </Card>
 
+            <ModalAlert isOpen={isWarningOpen} onClose={onWarningClose}>
+                <h1>Apakah anda yakin ingin menghapus postingan ini ? </h1>
 
-        </DefaultLayout>
+                <div className="flex gap-3 justify-end">
+                    <ButtonPrimary onClick={onWarningClose} className='px-4 py-2 rounded-md'>Batal</ButtonPrimary>
+                    {/* <ButtonDelete onClick={handleDelete}
+                        className='px-4 py-2 rounded-md flex justify-center items-center'
+                    >{loadingDelete ? <Spinner className={`w-5 h-5 mx-8`} size="sm" color="white" /> : 'Ya, Hapus'}</ButtonDelete> */}
+                </div>
+            </ModalAlert>
+        </DefaultLayout >
     )
 }
 
