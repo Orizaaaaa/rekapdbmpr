@@ -17,38 +17,45 @@ const Page = (props: Props) => {
     const [form, setForm] = React.useState({
         name: [] as File[],
         link: '',
-        description: ''
+        description: '',
+        typeContent: 'instagram'
     })
     const [errorMsg, setErrorMsg] = React.useState({
         image: '',
         imageUpdate: ''
     })
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, InputSelect: string) => {
-        const selectedImage = e.target.files?.[0];
+    const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>, InputSelect: string) => {
+        const selectedFile = e.target.files?.[0];
 
-        if (!selectedImage) {
+        if (!selectedFile) {
             console.log('No file selected');
             return;
         }
 
+        const allowedImageTypes = ['image/png', 'image/jpeg'];
+        const allowedVideoTypes = ['video/mp4'];
+        const maxImageSize = 5 * 1024 * 1024; // 5MB
+        const maxVideoSize = 20 * 1024 * 1024; // 20MB
+
+        const isImage = allowedImageTypes.includes(selectedFile.type);
+        const isVideo = allowedVideoTypes.includes(selectedFile.type);
+
         if (InputSelect === 'add') {
             // Validasi tipe file
-            const allowedTypes = ['image/png', 'image/jpeg'];
-            if (!allowedTypes.includes(selectedImage.type)) {
+            if (!isImage && !isVideo) {
                 setErrorMsg((prev) => ({
                     ...prev,
-                    image: '*Hanya file PNG dan JPG yang diperbolehkan',
+                    media: '*Hanya file PNG, JPG, atau MP4 yang diperbolehkan',
                 }));
                 return;
             }
 
-            // Validasi ukuran file (dalam byte, 5MB = 5 * 1024 * 1024)
-            const maxSize = 5 * 1024 * 1024;
-            if (selectedImage.size > maxSize) {
+            // Validasi ukuran file
+            if ((isImage && selectedFile.size > maxImageSize) || (isVideo && selectedFile.size > maxVideoSize)) {
                 setErrorMsg((prev) => ({
                     ...prev,
-                    image: '*Ukuran file maksimal 5 MB',
+                    media: `*Ukuran file maksimal ${isImage ? '5MB' : '20MB'}`,
                 }));
                 return;
             }
@@ -56,73 +63,75 @@ const Page = (props: Props) => {
             // Hapus pesan error jika file valid
             setErrorMsg((prev) => ({
                 ...prev,
-                image: '',
+                media: '',
             }));
 
             // Update state form dengan file yang valid
             setForm((prevState) => ({
                 ...prevState,
-                name: [...prevState.name, selectedImage],
+                name: [...prevState.name, selectedFile],
             }));
         } else {
-
-            // Validasi tipe file
-            const allowedTypes = ['image/png', 'image/jpeg'];
-            if (!allowedTypes.includes(selectedImage.type)) {
+            // Validasi untuk update
+            if (!isImage && !isVideo) {
                 setErrorMsg((prev) => ({
                     ...prev,
-                    imageUpdate: '*Hanya file PNG dan JPG yang diperbolehkan',
+                    mediaUpdate: '*Hanya file PNG, JPG, atau MP4 yang diperbolehkan',
                 }));
                 return;
             }
 
-            // Validasi ukuran file (dalam byte, 5MB = 5 * 1024 * 1024)
-            const maxSize = 5 * 1024 * 1024;
-            if (selectedImage.size > maxSize) {
+            if ((isImage && selectedFile.size > maxImageSize) || (isVideo && selectedFile.size > maxVideoSize)) {
                 setErrorMsg((prev) => ({
                     ...prev,
-                    imageUpdate: '*Ukuran file maksimal 5 MB',
+                    mediaUpdate: `*Ukuran file maksimal ${isImage ? '5MB' : '20MB'}`,
                 }));
                 return;
             }
 
-            // Hapus pesan error jika file valid
             setErrorMsg((prev) => ({
                 ...prev,
-                imageUpdate: '',
+                mediaUpdate: '',
             }));
-
-
         }
     };
 
-
-    const deleteArrayImage = (index: number, type: string) => {
+    const deleteArrayMedia = (index: number, type: string) => {
         if (type === 'add') {
-            setForm(prevState => ({
+            setForm((prevState) => ({
                 ...prevState,
-                name: prevState.name.filter((_, i) => i !== index)
+                name: prevState.name.filter((_, i) => i !== index),
             }));
         }
-
     };
+
 
     const handleChange = (e: any) => {
         const { name, value } = e.target;
         setForm({ ...form, [name]: value });
     }
 
+    const buttonChangedTypeContent = (name: string) => {
+        if (name === 'tiktok') {
+            setForm({ ...form, typeContent: 'tiktok' })
+        } else {
+            setForm({ ...form, typeContent: 'instagram' })
+        }
+    }
+
     console.log(errorMsg);
+    console.log(form);
+
 
     return (
         <DefaultLayout>
             <Card padding='p-3'>
 
                 <div className="flex gap-3">
-                    <ButtonSecondary className='py-1 px-4 rounded-lg'>
+                    <ButtonSecondary onClick={() => buttonChangedTypeContent('instagram')} className='py-1 px-4 rounded-lg'>
                         Instagram
                     </ButtonSecondary>
-                    <ButtonSecondary className='py-1 px-4 rounded-lg'>
+                    <ButtonSecondary onClick={() => buttonChangedTypeContent('tiktok')} className='py-1 px-4 rounded-lg'>
                         Tiktok
                     </ButtonSecondary>
                 </div>
@@ -130,34 +139,49 @@ const Page = (props: Props) => {
                 <div className="content mt-4 mb-2">
                     <CaraoselImage>
                         {form.name.length > 0 ? (
-                            form.name.map((image, index) => (
+                            form.name.map((media, index) => (
                                 <SwiperSlide key={index}>
                                     <>
-                                        <div className="flex justify-center items-center " style={{ pointerEvents: 'none' }}>
-                                            <img
-                                                src={URL.createObjectURL(image)}
-                                                alt={`preview-${index}`}
-                                                className="w-auto h-[200px] relative"
-                                            />
+                                        <div className="flex justify-center items-center" >
+                                            {media.type.startsWith('image/') ? (
+                                                // Tampilkan gambar
+                                                <img
+                                                    src={URL.createObjectURL(media)}
+                                                    alt={`preview-${index}`}
+                                                    className="w-auto h-[200px] relative"
+                                                />
+                                            ) : media.type.startsWith('video/') ? (
+                                                // Tampilkan video
+                                                <video
+                                                    controls
+                                                    src={URL.createObjectURL(media)}
+                                                    className="w-auto h-[200px] relative z-999999"
+                                                />
+                                            ) : null}
                                         </div>
-                                        <button onClick={() => deleteArrayImage(index, 'add')} className="button-delete array image absolute top-0 right-0 z-10 "  ><IoCloseCircleOutline color="red" size={34} /></button>
+                                        <button
+                                            onClick={() => deleteArrayMedia(index, 'add')}
+                                            className="button-delete array image absolute top-0 right-0 z-10"
+                                        >
+                                            <IoCloseCircleOutline color="red" size={34} />
+                                        </button>
                                     </>
                                 </SwiperSlide>
                             ))
                         ) : (
-                            <div className='flex justify-center border-2 border-dashed'>
-                                <Image className="w-auto h-[200px] relative " src={camera} alt="image"></Image>
+                            <div className="flex justify-center border-2 border-dashed">
+                                <Image className="w-auto h-[200px] relative" src={camera} alt="image" />
                             </div>
                         )}
-
                     </CaraoselImage>
+
                     <div className="grid grid-cols-2 justify-between mt-5 gap-2">
                         <ButtonPrimary className='rounded-md relative cursor-pointer py-2 px-1' >Tambah Konten
                             <input
                                 type="file"
                                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                 id="image-input-add"
-                                onChange={(e) => handleImageChange(e, 'add')}
+                                onChange={(e) => handleMediaChange(e, 'add')}
                             />
                         </ButtonPrimary>
                         <ButtonSecondary className='rounded-md  py-2 px-1' onClick={() => setForm(prevForm => ({ ...prevForm, name: [] }))} >Hapus Semua</ButtonSecondary>
