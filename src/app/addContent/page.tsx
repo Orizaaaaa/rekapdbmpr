@@ -128,12 +128,17 @@ const Page = (props: Props) => {
             <Card padding='p-3'>
 
                 <div className="flex gap-3">
-                    <ButtonSecondary onClick={() => buttonChangedTypeContent('instagram')} className='py-1 px-4 rounded-lg'>
+                    <button onClick={() => buttonChangedTypeContent('instagram')}
+                        className={`${form.typeContent === 'instagram' ? 'bg-black text-white' : 'border-black  text-black bg-white'} py-1 px-4 rounded-lg border-2
+                         `}>
                         Instagram
-                    </ButtonSecondary>
-                    <ButtonSecondary onClick={() => buttonChangedTypeContent('tiktok')} className='py-1 px-4 rounded-lg'>
+                    </button>
+
+                    <button onClick={() => buttonChangedTypeContent('tiktok')}
+                        className={`${form.typeContent === 'tiktok  ' ? 'bg-black text-white' : 'border-black  text-black bg-white'} py-1 px-4 rounded-lg border-2
+                        `}>
                         Tiktok
-                    </ButtonSecondary>
+                    </button>
                 </div>
 
                 <div className="content mt-4 mb-2">
