@@ -1,7 +1,7 @@
 "use client"
 
 import Card from "@/components/elements/card/Card";
-import { manusiaLaptop, money, outCome, yellowDolar } from "../image";
+import { article, article2, manusiaLaptop, money, outCome, user, yellowDolar } from "../image";
 import DefaultLayout from "@/components/layouts/DefaultLayout";
 import Image from "next/image";
 import CardBox from "@/components/fragemnts/cardBox/CardBox";;
@@ -44,17 +44,17 @@ const Dashboard: React.FC = () => {
                     />
                 ))} */}
                 <CardBox
-                    image={money} // Sesuaikan gambar berdasarkan name
+                    image={article} // Sesuaikan gambar berdasarkan name
                     value={'11'} // Format angka untuk lebih rapi
                     title={'Total postingan saat ini'}
                 />
                 <CardBox
-                    image={money} // Sesuaikan gambar berdasarkan name
+                    image={user} // Sesuaikan gambar berdasarkan name
                     value={'11'} // Format angka untuk lebih rapi
                     title={'Semua User'}
                 />
                 <CardBox
-                    image={money} // Sesuaikan gambar berdasarkan name
+                    image={article2} // Sesuaikan gambar berdasarkan name
                     value={'11'} // Format angka untuk lebih rapi
                     title={'Semua Postingan'}
                 />
