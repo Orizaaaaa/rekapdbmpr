@@ -135,7 +135,7 @@ const Page = (props: Props) => {
                     </button>
 
                     <button onClick={() => buttonChangedTypeContent('tiktok')}
-                        className={`${form.typeContent === 'tiktok  ' ? 'bg-black text-white' : 'border-black  text-black bg-white'} py-1 px-4 rounded-lg border-2
+                        className={`${form.typeContent === 'tiktok' ? 'bg-black text-white' : 'border-black  text-black bg-white'} py-1 px-4 rounded-lg border-2
                         `}>
                         Tiktok
                     </button>
