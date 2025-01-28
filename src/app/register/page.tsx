@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { FaEyeSlash, FaPen } from 'react-icons/fa6';
-import { camera, logo } from '@/app/image';
+import { camera, logo, oneLogo } from '@/app/image';
 import { Spinner } from '@nextui-org/react';
 import { IoEye } from 'react-icons/io5';
 import Link from 'next/link';
@@ -214,7 +214,7 @@ const Register = (props: Props) => {
                     </div> */}
                     <form className='p-6 bg-[#e9e9e9] rounded-lg  m-3 lg:m-0' onSubmit={handleRegister}>
 
-                        <div className="images my-3">
+                        {/* <div className="images my-3">
                             {form.image && form.image instanceof Blob ? (
                                 <div className='relative h-[90px] w-[90px] mx-auto '>
                                     <img className=" h-[90px] w-[90px]  rounded-full border-3 border-primary" src={URL.createObjectURL(form.image)} />
@@ -242,6 +242,10 @@ const Register = (props: Props) => {
                                 onChange={(e) => handleImageChange(e, 'add')}
                             />
 
+                        </div> */}
+
+                        <div className="logo flex justify-center my-5">
+                            <Image src={oneLogo} alt="logo" width={100} height={130} />
                         </div>
 
 
