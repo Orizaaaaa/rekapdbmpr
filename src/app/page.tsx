@@ -96,7 +96,7 @@ const Login = () => {
           <ButtonPrimary typeButon={"submit"} disabled={disabled} className={`rounded-lg w-full mb-3 font-medium py-2 `}>
             {loading ? <Spinner className={`w-5 h-5 `} size="sm" color="white" /> : 'Login'}
           </ButtonPrimary>
-          <p className='text-sm'>Belum punya akun ? <Link className='text-primary font-medium ' href={'/'} > Daftar</Link></p>
+          <p className='text-sm'>Belum punya akun ? <Link className='text-primary font-medium ' href={'/register'} > Daftar</Link></p>
         </form>
 
       </div>

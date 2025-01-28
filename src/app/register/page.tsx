@@ -26,8 +26,7 @@ const Register = (props: Props) => {
         confirmPassword: '', // Tambahkan untuk konfirmasi password
         image: '',
         role: '',
-        number_phone: '',
-        nik: ''
+
     });
     const [typePassword, setTypePassword] = useState("password");
     const [typeConfirmPassword, setTypeConfirmPassword] = useState("password"); // Untuk konfirmasi password
@@ -39,8 +38,7 @@ const Register = (props: Props) => {
         confirmPassword: '', // Tambahkan untuk konfirmasi password
         image: null as File | null,
         role: 'user',
-        number_phone: '',
-        nik: ''
+
     });
 
     const togglePassword = () => {
@@ -56,60 +54,6 @@ const Register = (props: Props) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-
-        // Khusus validasi untuk nomor telepon
-        if (name === 'number_phone') {
-            // Hapus semua karakter selain angka
-            let numericValue = value.replace(/\D/g, '');
-
-            // Jika nomor dimulai dengan '08', ubah menjadi '628'
-            if (numericValue.startsWith('08')) {
-                numericValue = '628' + numericValue.slice(2);
-            }
-
-            // Jika lebih dari 15 angka, berikan pesan error
-            if (numericValue.length > 15) {
-                setErrorMsg((prev) => ({
-                    ...prev,
-                    number_phone: '*Nomor tidak boleh lebih dari 15 angka',
-                }));
-                return; // Tidak update state jika lebih dari 15 digit
-            } else {
-                // Hapus pesan error jika panjang nomor valid
-                setErrorMsg((prev) => ({
-                    ...prev,
-                    number_phone: '',
-                }));
-            }
-
-            // Update state dengan hanya angka
-            setForm({ ...form, [name]: numericValue });
-            return; // Menghentikan eksekusi lebih lanjut karena 'number_phone' sudah di-handle
-        }
-
-        // Khusus untuk validasi NIK
-        if (name === 'nik') {
-            // Hapus semua karakter selain angka
-            const numericValue = value.replace(/\D/g, '');
-
-            if (numericValue.length > 16) {
-                setErrorMsg((prev) => ({
-                    ...prev,
-                    nik: '*NIK tidak boleh lebih dari 16 digit',
-                }));
-                return; // Tidak update state jika lebih dari 16 digit
-            } else {
-                setErrorMsg((prev) => ({
-                    ...prev,
-                    nik: '',
-                }));
-            }
-
-            // Update state dengan hanya angka
-            setForm({ ...form, [name]: numericValue });
-            return; // Menghentikan eksekusi lebih lanjut karena 'nik' sudah di-handle
-        }
-
         // Update state untuk input lainnya
         setForm({ ...form, [name]: value });
     };
@@ -131,10 +75,6 @@ const Register = (props: Props) => {
         const emailRegex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/;
         // Validasi password
         const passwordRegex = /^[A-Za-z0-9]+$/;
-        // Validasi angka (untuk NIK dan No. HP)
-        const numberRegex = /^[0-9]+$/;
-        // Validasi nomor telepon yang dimulai dengan 628 dan minimal 10 digit
-        const phoneRegex = /^628[0-9]{8,}$/;
 
         // Cek apakah semua field diisi
         if (!form.name) {
@@ -155,36 +95,12 @@ const Register = (props: Props) => {
             valid = false;
         }
 
-        if (!form.number_phone) {
-            newErrorMsg.number_phone = '*No HP harus diisi';
-            valid = false;
-
-            // Menggunakan validasi baru untuk nomor telepon
-        } else if (!phoneRegex.test(form.number_phone)) {
-            newErrorMsg.number_phone = '*No HP harus dimulai dengan 628 dan berisi minimal 10 digit angka';
-            valid = false;
-        }
-
-        if (!form.nik) {
-            newErrorMsg.nik = '*NIK harus diisi';
-            valid = false;
-        }
 
         if (!form.image) {
             newErrorMsg.image = '*Foto profil harus diunggah';
             valid = false;
         }
 
-        // Validasi tambahan
-        if (form.nik && (!numberRegex.test(form.nik) || form.nik.length !== 16)) {
-            newErrorMsg.nik = '*NIK harus berupa angka dan terdiri dari 16 karakter';
-            valid = false;
-        }
-
-        if (form.number_phone && !numberRegex.test(form.number_phone)) {
-            newErrorMsg.number_phone = '*Nomor telepon harus berupa angka';
-            valid = false;
-        }
 
         if (form.name && !nameRegex.test(form.name)) {
             newErrorMsg.name = '*Masukkan nama yang valid';
@@ -330,19 +246,17 @@ const Register = (props: Props) => {
 
 
                         <InputFormError errorMsg={errorMsg.name} placeholder='Masukkan Nama' type='text' htmlFor={'name'} value={form.name} onChange={handleChange} />
-                        <InputFormError errorMsg={errorMsg.nik} placeholder='Masukkan NIK' type='text' htmlFor={'nik'} value={form.nik} onChange={handleChange} />
 
                         <div className="flex gap-3">
                             <InputFormError errorMsg={errorMsg.email} placeholder='Masukkan Email' type='email' htmlFor={'email'} value={form.email} onChange={handleChange} />
-                            <InputFormError errorMsg={errorMsg.number_phone} placeholder='Masukkan No HP' type='text' htmlFor={'number_phone'} value={form.number_phone} onChange={handleChange} />
+                            <div className="relative">
+                                <button onClick={togglePassword} type='button' className={`icon-password h-full bg-transparent flex absolute right-0 justify-center items-center pe-4 pb-1 ${errorMsg.password ? 'pb-4' : ''}`}>
+                                    {showPassword ? <FaEyeSlash size={20} color='#636363' /> : <IoEye size={20} color='#636363' />}
+                                </button>
+                                <InputFormError errorMsg={errorMsg.password} htmlFor="password" onChange={handleChange} type={typePassword} value={form.password} placeholder="Masukkan Kata Sandi" />
+                            </div>
                         </div>
 
-                        <div className="relative">
-                            <button onClick={togglePassword} type='button' className={`icon-password h-full bg-transparent flex absolute right-0 justify-center items-center pe-4 ${errorMsg.password ? 'pb-4' : ''}`}>
-                                {showPassword ? <FaEyeSlash size={20} color='#636363' /> : <IoEye size={20} color='#636363' />}
-                            </button>
-                            <InputFormError errorMsg={errorMsg.password} htmlFor="password" onChange={handleChange} type={typePassword} value={form.password} placeholder="Masukkan Kata Sandi" />
-                        </div>
 
                         {/* Tambahan form untuk Konfirmasi Password */}
                         <div className="relative mt-1">
