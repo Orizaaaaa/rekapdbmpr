@@ -11,6 +11,7 @@ import { postImage } from '@/api/imagePost';
 import { IoIosArrowBack } from 'react-icons/io';
 import ButtonPrimary from '@/components/elements/buttonPrimary';
 import InputFormError from '@/components/elements/input/InputFormError';
+import { register } from '@/api/auth';
 
 
 type Props = {}
@@ -20,11 +21,11 @@ const Register = (props: Props) => {
     const [showPassword, setShowPassword] = useState(true);
     const [showConfirmPassword, setShowConfirmPassword] = useState(true); // Untuk konfirmasi password
     const [errorMsg, setErrorMsg] = useState({
-        name: '',
+        username: '',
         email: '',
         password: '',
         confirmPassword: '', // Tambahkan untuk konfirmasi password
-        image: '',
+        adress: '',
         role: '',
 
     });
@@ -32,12 +33,12 @@ const Register = (props: Props) => {
     const [typeConfirmPassword, setTypeConfirmPassword] = useState("password"); // Untuk konfirmasi password
     const [loading, setLoading] = useState(false);
     const [form, setForm] = useState({
-        name: '',
+        username: '',
         email: '',
         password: '',
         confirmPassword: '', // Tambahkan untuk konfirmasi password
-        image: null as File | null,
-        role: 'user',
+        adress: '',
+        role: 'admin',
 
     });
 
@@ -64,7 +65,7 @@ const Register = (props: Props) => {
         setLoading(true);
 
         // Reset error messages
-        const newErrorMsg = { name: '', email: '', password: '', confirmPassword: '', image: '', role: '', number_phone: '', nik: '' };
+        const newErrorMsg = { username: '', email: '', password: '', confirmPassword: '', role: '', number_phone: '', nik: '', adress: '' };
         setErrorMsg(newErrorMsg);
 
         let valid = true;
@@ -77,8 +78,8 @@ const Register = (props: Props) => {
         const passwordRegex = /^[A-Za-z0-9]+$/;
 
         // Cek apakah semua field diisi
-        if (!form.name) {
-            newErrorMsg.name = '*Nama harus diisi';
+        if (!form.username) {
+            newErrorMsg.username = '*Nama harus diisi';
             valid = false;
         }
         if (!form.email) {
@@ -96,14 +97,10 @@ const Register = (props: Props) => {
         }
 
 
-        if (!form.image) {
-            newErrorMsg.image = '*Foto profil harus diunggah';
-            valid = false;
-        }
 
 
-        if (form.name && !nameRegex.test(form.name)) {
-            newErrorMsg.name = '*Masukkan nama yang valid';
+        if (form.username && !nameRegex.test(form.username)) {
+            newErrorMsg.username = '*Masukkan nama yang valid';
             valid = false;
         }
 
@@ -123,73 +120,29 @@ const Register = (props: Props) => {
             setLoading(false);
             return;
         }
-
         // Jika lolos validasi
-        const imageUrl = await postImage({ image: form.image });
-        if (imageUrl) {
-            const { confirmPassword, ...dataWithoutConfirmPassword } = form;
-            const data = { ...dataWithoutConfirmPassword, image: imageUrl };
-            // registerUser(data, (status: boolean, res: any) => {
-            //     if (res?.response?.data?.data?.error) {
-            //         setErrorMsg({
-            //             ...errorMsg, email: 'Email sudah terdaftar',
-            //         })
-            //     }
-            //     if (status) {
-            //         router.push('/login');
-            //     }
-            //     setLoading(false);
-            // });
-        }
-    };
 
-
-    const handleFileManager = (fileName: string) => {
-        if (fileName === 'add') {
-            const fileInput = document.getElementById("image-input-add") as HTMLInputElement | null;
-            fileInput ? fileInput.click() : null;
-        } else {
-            console.log('error');
-        }
-    };
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, InputSelect: string) => {
-        if (InputSelect === 'add') {
-            const selectedImage = e.target.files?.[0];
-
-            if (selectedImage) {
-                // Validasi tipe file
-                const allowedTypes = ['image/png', 'image/jpeg'];
-                if (!allowedTypes.includes(selectedImage.type)) {
-                    setErrorMsg((prev) => ({
-                        ...prev,
-                        image: '*Hanya file PNG dan JPG yang diperbolehkan',
-                    }));
-                    return; // Tidak update state jika tipe file tidak valid
-                }
-
-                // Validasi ukuran file (dalam byte, 5MB = 5 * 1024 * 1024)
-                const maxSize = 5 * 1024 * 1024;
-                if (selectedImage.size > maxSize) {
-                    setErrorMsg((prev) => ({
-                        ...prev,
-                        image: '*Ukuran file maksimal 5 MB',
-                    }));
-                    return; // Tidak update state jika ukuran file lebih dari 5MB
-                }
-
-                // Hapus pesan error jika file valid
-                setErrorMsg((prev) => ({
-                    ...prev,
-                    image: '',
-                }));
-
-                // Update state dengan file yang valid
-                setForm({ ...form, image: selectedImage });
-            } else {
-                console.log('error');
+        const { confirmPassword, ...dataWithoutConfirmPassword } = form;
+        const data = { ...dataWithoutConfirmPassword };
+        register(data, (status: boolean, res: any) => {
+            if (res?.response?.data?.data?.error) {
+                setErrorMsg({
+                    ...errorMsg, email: 'Email sudah terdaftar',
+                })
             }
-        }
+
+            if (status) {
+                router.push('/');
+            }
+
+            console.log(res);
+            setLoading(false);
+        });
+
+
+
     };
+
 
 
 
@@ -245,23 +198,23 @@ const Register = (props: Props) => {
                         </div> */}
 
                         <div className="logo flex justify-center my-5">
-                            <Image src={oneLogo} alt="logo" width={100} height={130} />
+                            <Image src={oneLogo} alt="logo" width={130} height={150} />
                         </div>
 
 
-                        <InputFormError errorMsg={errorMsg.name} placeholder='Masukkan Nama' type='text' htmlFor={'name'} value={form.name} onChange={handleChange} />
+                        <InputFormError errorMsg={errorMsg.username} placeholder='Masukkan Nama' type='text' htmlFor={'username'} value={form.username} onChange={handleChange} />
 
                         <div className="flex gap-3">
                             <InputFormError errorMsg={errorMsg.email} placeholder='Masukkan Email' type='email' htmlFor={'email'} value={form.email} onChange={handleChange} />
-                            <div className="relative">
-                                <button onClick={togglePassword} type='button' className={`icon-password h-full bg-transparent flex absolute right-0 justify-center items-center pe-4 pb-1 ${errorMsg.password ? 'pb-4' : ''}`}>
-                                    {showPassword ? <FaEyeSlash size={20} color='#636363' /> : <IoEye size={20} color='#636363' />}
-                                </button>
-                                <InputFormError errorMsg={errorMsg.password} htmlFor="password" onChange={handleChange} type={typePassword} value={form.password} placeholder="Masukkan Kata Sandi" />
-                            </div>
+                            <InputFormError errorMsg={errorMsg.adress} placeholder='Masukkan Alamat' type='text' htmlFor={'adress'} value={form.adress} onChange={handleChange} />
                         </div>
 
-
+                        <div className="relative">
+                            <button onClick={togglePassword} type='button' className={`icon-password h-full bg-transparent flex absolute right-0 justify-center items-center pe-4 ${errorMsg.password ? 'pb-4' : ''}`}>
+                                {showPassword ? <FaEyeSlash size={20} color='#636363' /> : <IoEye size={20} color='#636363' />}
+                            </button>
+                            <InputFormError errorMsg={errorMsg.password} htmlFor="password" onChange={handleChange} type={typePassword} value={form.password} placeholder="Masukkan Kata Sandi" />
+                        </div>
                         {/* Tambahan form untuk Konfirmasi Password */}
                         <div className="relative mt-1">
                             <button onClick={toggleConfirmPassword} type='button' className={`icon-password h-full bg-transparent flex absolute right-0 justify-center items-center pe-4 ${errorMsg.confirmPassword ? 'pb-4' : ''}`}>

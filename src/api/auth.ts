@@ -13,3 +13,12 @@ export const loginService = async (form: any, callback: any) => {
         })
 }
 
+export const register = async (form: any, callback: any) => {
+    await axios.post(`${url}/users/register`, form)
+        .then((result) => {
+            callback(true, result.data)
+        }).catch((err) => {
+            callback(false, err)
+        });
+}
+

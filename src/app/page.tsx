@@ -84,7 +84,7 @@ const Login = () => {
       <div className="container mx-auto flex justify-center items-center w-[100vw] h-[100vh] ">
         <form className='p-6 bg-[#e9e9e9] rounded-lg w-96 m-3 lg:m-0' onSubmit={handleLogin}>
           <div className="logo flex justify-center my-5">
-            <Image src={oneLogo} alt="logo" width={100} height={130} />
+            <Image src={oneLogo} alt="logo" width={130} height={150} />
           </div>
 
           <InputForm placeholder='Masukkan Email' type='email' htmlFor={'email'} value={form.email} onChange={handleChange} />
