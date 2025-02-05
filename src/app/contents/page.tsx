@@ -73,8 +73,8 @@ const Page = (props: Props) => {
             <div className="my-4">
                 <div className="grid grid-cols-4">
                     <CardPost buttonView={() => router.push('/contents/8')}
-                        image='https://akcdn.detik.net.id/visual/2021/02/25/mark-zuckerbergbritannicacom_11.jpeg?w=480&q=90' typePost='tiktok' text='Lorem ipsum, dolor sit amet consectetur adipisicing elit...' />
-                    <CardPost buttonView={() => router.push('/contents/8')} image='https://www.deheus.id/siteassets/animal-nutrition/swine/de-heus-animal-nutrition_animals_swines_-pigs_sows_in_stables-1.jpg' typePost='ig' text='Lorem ipsum, dolor sit amet consectetur adipisicing elit...' />
+                        image='https://akcdn.detik.net.id/visual/2021/02/25/mark-zuckerbergbritannicacom_11.jpeg?w=480&q=90' typePost='tiktok' text='Mark Elliot Zuckerberg adalah seorang...' />
+                    <CardPost buttonView={() => router.push('/contents/8')} image='https://www.family.abbott/content/dam/an/familyabbott/id-id/ensure/tools-and-resources/tips-on-how-to-live-strong/fitness/light-moderate-and-vigorous-physical-activities/143_Mastheadl.jpg.jpg' typePost='ig' text='Olahraga adalah salah satu kegiatan...' />
                 </div>
 
             </div>

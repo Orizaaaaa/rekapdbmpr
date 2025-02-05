@@ -46,7 +46,9 @@ const Page = (props: Props) => {
 
                     </div>
 
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam tenetur deleniti nemo harum a labore commodi aut laudantium, dolorum temporibus iure earum, autem excepturi laborum dolore enim nisi ducimus. Cumque.</p>
+                    <p>Mark Zuckerberg adalah seorang programmer dan pengusaha teknologi yang mendirikan Facebook pada tahun 2004 bersama teman-temannya di Harvard, yaitu Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, dan Chris Hughes. Awalnya, Facebook dibuat sebagai platform sosial untuk mahasiswa Harvard, tetapi dengan cepat berkembang dan menjadi media sosial terbesar di dunia.
+
+                        Pada tahun 2012, Facebook melakukan IPO dan menjadi salah satu perusahaan teknologi terbesar. Zuckerberg terus mengembangkan perusahaannya dengan mengakuisisi platform lain seperti Instagram, WhatsApp, dan Oculus VR.</p>
                 </div>
             </Card>
 
