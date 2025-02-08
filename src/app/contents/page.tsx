@@ -7,11 +7,12 @@ import ModalDefault from '@/components/fragemnts/modal/modal'
 import DefaultLayout from '@/components/layouts/DefaultLayout'
 import { dateFirst, formatDate, formatDateStr } from '@/utils/helper'
 import { parseDate } from '@internationalized/date'
-import { Card, DateRangePicker, useDisclosure } from '@nextui-org/react'
+import { Autocomplete, AutocompleteItem, Card, DateRangePicker, useDisclosure } from '@nextui-org/react'
 import React, { useState } from 'react'
 import useSWR from "swr";
 import CardPost from '@/components/fragemnts/cardPost/CardPost'
 import { useRouter } from 'next/navigation'
+import { socialPlatforms } from '@/api/content'
 
 type Props = {}
 
@@ -86,19 +87,16 @@ const Page = (props: Props) => {
 
                 </div>
 
-                <div className="flex gap-3">
-                    <button onClick={() => buttonChangedTypeContent('instagram')}
-                        className={`${form.typeContent === 'instagram' ? 'bg-black text-white' : 'border-black  text-black bg-white'} py-1 px-4 rounded-lg border-2
-                         `}>
-                        Instagram
-                    </button>
-
-                    <button onClick={() => buttonChangedTypeContent('tiktok')}
-                        className={`${form.typeContent === 'tiktok' ? 'bg-black text-white' : 'border-black  text-black bg-white'} py-1 px-4 rounded-lg border-2
-                        `}>
-                        Tiktok
-                    </button>
-                </div>
+                <Autocomplete
+                    aria-label='none'
+                    isRequired
+                    className="max-w-xs rounded-lg border-2 "
+                    defaultItems={socialPlatforms}
+                    size='sm'
+                    defaultSelectedKey={'instagram'}
+                >
+                    {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
+                </Autocomplete>
 
             </Card>
 

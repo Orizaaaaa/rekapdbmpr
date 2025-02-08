@@ -11,3 +11,10 @@ export const createContent = async (form: any, callback: any) => {
         });
 
 }
+
+export const socialPlatforms = [
+    { key: 'facebook', label: 'Facebook' },
+    { key: 'twitter', label: 'Twitter' },
+    { key: 'instagram', label: 'Instagram' },
+    { key: 'tiktok', label: 'TikTok' },
+];

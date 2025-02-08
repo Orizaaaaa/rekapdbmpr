@@ -16,7 +16,7 @@ import { formatDate, formatDateStr } from '@/utils/helper'
 import { parseDate } from '@internationalized/date'
 import { IoIosClose } from 'react-icons/io'
 import { postMediaArray } from '@/api/imagePost'
-import { createContent } from '@/api/content'
+import { createContent, socialPlatforms } from '@/api/content'
 
 type Props = {}
 
@@ -181,13 +181,6 @@ const Page = (props: Props) => {
         }));
     };
 
-
-    const socialPlatforms = [
-        { key: 'facebook', label: 'Facebook' },
-        { key: 'twitter', label: 'Twitter' },
-        { key: 'instagram', label: 'Instagram' },
-        { key: 'tiktok', label: 'TikTok' },
-    ];
 
 
     // Fungsi untuk menambahkan akun sosial media baru
