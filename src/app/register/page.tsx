@@ -160,76 +160,47 @@ const Register = (props: Props) => {
                 </div>
 
             </div>
-            <div className="container flex justify-center items-center w-[100vw] h-[99vh] ">
-                <div className=" ">
-                    {/* <div className="h-90 w-full hidden md:block">
+            <div className="container mx-auto flex justify-center items-center w-[100vw] h-[99vh] ">
+
+                {/* <div className="h-90 w-full hidden md:block">
                         <Image src={bgLogin} alt="human" />
                     </div> */}
-                    <form className='p-6 bg-[#e9e9e9] rounded-lg  m-3 lg:m-0' onSubmit={handleRegister}>
-
-                        {/* <div className="images my-3">
-                            {form.image && form.image instanceof Blob ? (
-                                <div className='relative h-[90px] w-[90px] mx-auto '>
-                                    <img className=" h-[90px] w-[90px]  rounded-full border-3 border-primary" src={URL.createObjectURL(form.image)} />
-                                    <div className=" absolute bottom-0 right-0 ">
-                                        <button className={` bg-primary rounded-full p-2 ${form.image === null ? 'hidden' : ''}`} type="button" onClick={() => handleFileManager('add')}>
-                                            <FaPen color='#ffff' />
-                                        </button>
-                                    </div>
-                                </div>
-
-                            ) : (
-                                <>
-                                    <div className="images mx-auto border-dashed border-2 border-black rounded-full bg-gray-300 h-[80px] w-[80px] flex justify-center items-center relative">
-                                        <button className="flex-col justify-center items-center h-full w-full" type="button" onClick={() => handleFileManager('add')}>
-                                            <Image className="w-10 h-10 mx-auto" src={camera} alt="cam" />
-                                        </button>
-                                    </div>
-                                    <p className='text-center mt-2 text-small text-red' >{errorMsg.image}</p>
-                                </>
-                            )}
-                            <input
-                                type="file"
-                                className="hidden"
-                                id="image-input-add"
-                                onChange={(e) => handleImageChange(e, 'add')}
-                            />
-
-                        </div> */}
-
-                        <div className="logo flex justify-center my-5">
-                            <Image src={oneLogo} alt="logo" width={130} height={150} />
-                        </div>
+                <form className='p-6 bg-[#e9e9e9] rounded-lg  m-3 lg:m-0' onSubmit={handleRegister}>
 
 
-                        <InputFormError errorMsg={errorMsg.username} placeholder='Masukkan Nama' type='text' htmlFor={'username'} value={form.username} onChange={handleChange} />
+                    <div className="logo flex justify-center my-5">
+                        <Image src={oneLogo} alt="logo" width={130} height={150} />
+                    </div>
 
-                        <div className="flex gap-3">
-                            <InputFormError errorMsg={errorMsg.email} placeholder='Masukkan Email' type='email' htmlFor={'email'} value={form.email} onChange={handleChange} />
-                            <InputFormError errorMsg={errorMsg.adress} placeholder='Masukkan Alamat' type='text' htmlFor={'adress'} value={form.adress} onChange={handleChange} />
-                        </div>
 
-                        <div className="relative">
-                            <button onClick={togglePassword} type='button' className={`icon-password h-full bg-transparent flex absolute right-0 justify-center items-center pe-4 ${errorMsg.password ? 'pb-4' : ''}`}>
-                                {showPassword ? <FaEyeSlash size={20} color='#636363' /> : <IoEye size={20} color='#636363' />}
-                            </button>
-                            <InputFormError errorMsg={errorMsg.password} htmlFor="password" onChange={handleChange} type={typePassword} value={form.password} placeholder="Masukkan Kata Sandi" />
-                        </div>
-                        {/* Tambahan form untuk Konfirmasi Password */}
-                        <div className="relative mt-1">
-                            <button onClick={toggleConfirmPassword} type='button' className={`icon-password h-full bg-transparent flex absolute right-0 justify-center items-center pe-4 ${errorMsg.confirmPassword ? 'pb-4' : ''}`}>
-                                {showConfirmPassword ? <FaEyeSlash size={20} color='#636363' /> : <IoEye size={20} color='#636363' />}
-                            </button>
-                            <InputFormError errorMsg={errorMsg.confirmPassword} htmlFor="confirmPassword" onChange={handleChange} type={typeConfirmPassword} value={form.confirmPassword} placeholder="Konfirmasi Kata Sandi" />
-                        </div>
-                        <ButtonPrimary typeButon={"submit"} className={`rounded-lg w-full mb-3 font-medium py-2 flex justify-center items-center  bg-primary`}>
-                            {loading ? <Spinner className={`w-5 h-5`} size="sm" color="white" /> : 'Daftar'}
-                        </ButtonPrimary>
-                        <p className='text-sm'>Sudah punya akun ? <Link className='text-primary font-medium ' href={'/'} > Masuk</Link></p>
-                    </form>
-                </div>
+                    <InputFormError errorMsg={errorMsg.username} placeholder='Masukkan Nama' type='text' htmlFor={'username'} value={form.username} onChange={handleChange} />
 
+                    <div className="flex gap-3">
+                        <InputFormError errorMsg={errorMsg.email} placeholder='Masukkan Email' type='email' htmlFor={'email'} value={form.email} onChange={handleChange} />
+                        <InputFormError errorMsg={errorMsg.adress} placeholder='Masukkan Alamat' type='text' htmlFor={'adress'} value={form.adress} onChange={handleChange} />
+                    </div>
+
+                    <div className="relative">
+                        <button onClick={togglePassword} type='button' className={`icon-password h-full bg-transparent flex absolute right-0 justify-center items-center pe-4 ${errorMsg.password ? 'pb-4' : ''}`}>
+                            {showPassword ? <FaEyeSlash size={20} color='#636363' /> : <IoEye size={20} color='#636363' />}
+                        </button>
+                        <InputFormError errorMsg={errorMsg.password} htmlFor="password" onChange={handleChange} type={typePassword} value={form.password} placeholder="Masukkan Kata Sandi" />
+                    </div>
+                    {/* Tambahan form untuk Konfirmasi Password */}
+                    <div className="relative mt-1">
+                        <button onClick={toggleConfirmPassword} type='button' className={`icon-password h-full bg-transparent flex absolute right-0 justify-center items-center pe-4 ${errorMsg.confirmPassword ? 'pb-4' : ''}`}>
+                            {showConfirmPassword ? <FaEyeSlash size={20} color='#636363' /> : <IoEye size={20} color='#636363' />}
+                        </button>
+                        <InputFormError errorMsg={errorMsg.confirmPassword} htmlFor="confirmPassword" onChange={handleChange} type={typeConfirmPassword} value={form.confirmPassword} placeholder="Konfirmasi Kata Sandi" />
+                    </div>
+                    <ButtonPrimary typeButon={"submit"} className={`rounded-lg w-full mb-3 font-medium py-2 flex justify-center items-center  bg-primary`}>
+                        {loading ? <Spinner className={`w-5 h-5`} size="sm" color="white" /> : 'Daftar'}
+                    </ButtonPrimary>
+                    <p className='text-sm'>Sudah punya akun ? <Link className='text-primary font-medium ' href={'/'} > Masuk</Link></p>
+                </form>
             </div>
+
+
         </div>
     )
 }
