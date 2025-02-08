@@ -4,7 +4,7 @@ import Card from '@/components/elements/card/Card'
 import CaraoselImage from '@/components/fragemnts/caraoselProduct/caraoselProduct'
 import DefaultLayout from '@/components/layouts/DefaultLayout'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SwiperSlide } from 'swiper/react'
 
 import ButtonPrimary from '@/components/elements/buttonPrimary'
@@ -16,8 +16,9 @@ import { formatDate, formatDateStr } from '@/utils/helper'
 import { parseDate } from '@internationalized/date'
 import { IoIosClose } from 'react-icons/io'
 import { postMediaArray } from '@/api/imagePost'
-import { createContent, socialPlatforms } from '@/api/content'
+import { createContent, getDetailContent, socialPlatforms } from '@/api/content'
 import { camera } from '@/app/image'
+import { useParams } from 'next/navigation'
 
 type Props = {}
 
@@ -38,6 +39,7 @@ interface Content {
 
 
 const Page = (props: Props) => {
+    const { id }: any = useParams()
     const dateNow = new Date();
     const [selectedDate, setSelectedDate] = useState(parseDate((formatDate(dateNow))))
     const [form, setForm] = React.useState<Content>({
@@ -49,6 +51,18 @@ const Page = (props: Props) => {
         scheduled_at: '',
         social_accounts: [{ platform: '', account_id: '' }],
     });
+
+    useEffect(() => {
+        getDetailContent(id, (response: any) => {
+            const result = response.data
+            if (result) {
+                setForm(result)
+                console.log(result);
+
+                setSelectedDate(parseDate(result.scheduled_at))
+            }
+        })
+    }, []);
 
     const [loading, setLoading] = useState(false)
 
@@ -283,26 +297,32 @@ const Page = (props: Props) => {
 
                 <div className="content mt-4 mb-2">
                     <CaraoselImage>
-                        {form.media.length > 0 ? (
-                            form.media.map((media, index) => (
+                        {form?.media?.length > 0 ? (
+                            form?.media?.map((media, index) => (
                                 <SwiperSlide key={index}>
                                     <>
                                         <div className="flex justify-center items-center" >
-                                            {media.type.startsWith('image/') ? (
+                                            {media?.type?.startsWith('image/') ? (
                                                 // Tampilkan gambar
                                                 <img
-                                                    src={URL.createObjectURL(media)}
+                                                    src={typeof media === 'string' ? media : URL.createObjectURL(media)}
                                                     alt={`preview-${index}`}
                                                     className="w-auto h-[200px] relative"
                                                 />
-                                            ) : media.type.startsWith('video/') ? (
+                                            ) : media?.type?.startsWith('video/') ? (
                                                 // Tampilkan video
                                                 <video
                                                     controls
                                                     src={URL.createObjectURL(media)}
                                                     className="w-auto h-[200px] relative z-999999"
                                                 />
-                                            ) : null}
+                                            ) :
+                                                <img
+                                                    src={typeof media === 'string' ? media : URL.createObjectURL(media)} // Cek apakah image berupa string atau File
+                                                    alt={`preview-${index}`}
+                                                    className="w-auto h-[200px] relative"
+                                                />
+                                            }
                                         </div>
                                         <button
                                             onClick={() => deleteArrayMedia(index, 'add')}

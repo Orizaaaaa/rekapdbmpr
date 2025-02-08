@@ -12,6 +12,16 @@ export const createContent = async (form: any, callback: any) => {
 
 }
 
+export const getDetailContent = async (id: string, callback: any) => {
+    await axiosInterceptor.get(`/content/${id}`)
+        .then((result) => {
+            callback(result.data)
+        }).catch((err) => {
+            callback(err);
+            console.log(err);
+        });
+}
+
 export const socialPlatforms = [
     { key: 'facebook', label: 'Facebook' },
     { key: 'twitter', label: 'Twitter' },

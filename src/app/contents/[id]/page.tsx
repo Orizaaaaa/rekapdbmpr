@@ -73,7 +73,7 @@ const Page = (props: Props) => {
                         <div className="flex justify-between  bg-slate-900 rounded-lg mt-4 p-3">
                             <IoCloudDownloadOutline color='white' size={24} />
                             <IoLinkSharp className='cursor-pointer' color='white' size={24} onClick={() => handleCopy('https://akcdn.detik.net.id/visual/2021/02/25/mark-zuckerbergbritannicacom_11.jpeg?w=480&q=90')} />
-                            <CiEdit className='cursor-pointer' onClick={() => router.push('editContent/1')} color='white' size={24} />
+                            <CiEdit className='cursor-pointer' onClick={() => router.push(`editContent/${id}`)} color='white' size={24} />
                             <PiTrashLight className='cursor-pointer' onClick={openModalDelete} color='white' size={24} />
                         </div>
 
