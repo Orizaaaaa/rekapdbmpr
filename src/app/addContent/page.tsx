@@ -15,6 +15,7 @@ import { Autocomplete, AutocompleteItem, DatePicker } from '@nextui-org/react'
 import { formatDate, formatDateStr } from '@/utils/helper'
 import { parseDate } from '@internationalized/date'
 import { IoIosClose } from 'react-icons/io'
+import { postMediaArray } from '@/api/imagePost'
 
 type Props = {}
 
@@ -40,12 +41,14 @@ const Page = (props: Props) => {
     const [form, setForm] = React.useState<Content>({
         title: '',
         content: '',
-        media: [],
+        media: [] as File[],
         hashtags: [''], // Default ada satu input kosong
         mentions: [''], // Default ada satu input kosong
         scheduled_at: '',
         social_accounts: [{ platform: '', account_id: '' }],
     });
+
+    const [loading, setLoading] = useState(false)
 
     const [errorMsg, setErrorMsg] = React.useState({
         image: '',
@@ -69,7 +72,7 @@ const Page = (props: Props) => {
         const allowedImageTypes = ['image/png', 'image/jpeg'];
         const allowedVideoTypes = ['video/mp4'];
         const maxImageSize = 5 * 1024 * 1024; // 5MB
-        const maxVideoSize = 20 * 1024 * 1024; // 20MB
+        const maxVideoSize = 300 * 1024 * 1024; // 300MB
 
         const isImage = allowedImageTypes.includes(selectedFile.type);
         const isVideo = allowedVideoTypes.includes(selectedFile.type);
@@ -88,7 +91,7 @@ const Page = (props: Props) => {
             if ((isImage && selectedFile.size > maxImageSize) || (isVideo && selectedFile.size > maxVideoSize)) {
                 setErrorMsg((prev) => ({
                     ...prev,
-                    media: `*Ukuran file maksimal ${isImage ? '5MB' : '20MB'}`,
+                    media: `*Ukuran file maksimal ${isImage ? '5MB' : '300MB'}`,
                 }));
                 return;
             }
@@ -117,7 +120,7 @@ const Page = (props: Props) => {
             if ((isImage && selectedFile.size > maxImageSize) || (isVideo && selectedFile.size > maxVideoSize)) {
                 setErrorMsg((prev) => ({
                     ...prev,
-                    mediaUpdate: `*Ukuran file maksimal ${isImage ? '5MB' : '20MB'}`,
+                    mediaUpdate: `*Ukuran file maksimal ${isImage ? '5MB' : '300MB'}`,
                 }));
                 return;
             }
@@ -128,6 +131,7 @@ const Page = (props: Props) => {
             }));
         }
     };
+
 
     const deleteArrayMedia = (index: number, type: string) => {
         if (type === 'add') {
@@ -217,8 +221,52 @@ const Page = (props: Props) => {
         setForm({ ...form, social_accounts: updatedSocialAccounts });
     };
 
+    const handleCreateContent = async () => {
+        setLoading(true);
+        // Cek apakah array `form.name` kosong
+
+        try {
+            // Kirim gambar dan dapatkan URL-nya
+            const urls: string[] = await postMediaArray({ media: form.media });
+            console.log(urls);
+
+
+            // Buat data baru dengan URL gambar yang telah diunggah
+            const data = {
+                ...form,
+                media: urls,
+            };
+
+            console.log(data);
+
+            // Buat galeri dengan data yang telah diperbarui
+            // createContent(data, (status: any, result: any) => {
+            //     if (status) {
+            //         console.log(result);
+            //         setLoading(false);
+            //         setForm({
+            //             title: '',
+            //             content: '',
+            //             media: [],
+            //             hashtags: [''], // Default ada satu input kosong
+            //             mentions: [''], // Default ada satu input kosong
+            //             scheduled_at: '',
+            //             social_accounts: [{ platform: '', account_id: '' }],
+            //         });
+
+            //     }
+            // });
+        } catch (error) {
+            console.error("Error creating gallery:", error);
+        }
+
+    };
+
+
     console.log(errorMsg);
     console.log(form);
+    console.log(errorMsg);
+
 
     return (
         <DefaultLayout>
@@ -359,72 +407,54 @@ const Page = (props: Props) => {
                         aria-label='datepicker' className=" lg:w-75 mb-2 bg-white border-2
                          border-primary rounded-lg" />
                 </div>
+                <div className="social-media mt-5">
+                    {form.social_accounts.map((account, index) => (
+                        <div key={index} className="flex items-center gap-3 mb-3 relative">
 
-                <div className="social-media mt-5 flex items-center my-auto gap-2">
-                    <div className="media mb-3">
-                        <h1 className='mb-1'>
-                            Sosial Media
-                        </h1>
-                        <Autocomplete
-                            isRequired
-                            className="max-w-xs rounded-lg border-2 "
-                            defaultItems={socialPlatforms}
-                            size='sm'
-                        >
-                            {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
-                        </Autocomplete>
-                    </div>
+                            <div className="media mb-3">
+                                <h1 className='mb-1'>
+                                    Sosial Media
+                                </h1>
+                                <Autocomplete
+                                    aria-label='none'
+                                    isRequired
+                                    className="max-w-xs rounded-lg border-2 "
+                                    defaultItems={socialPlatforms}
+                                    size='sm'
+                                    onSelectionChange={(selected) => handleDropdownSelection(String(selected), index)}
+                                >
+                                    {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
+                                </Autocomplete>
+                            </div>
 
-                    <div className="link">
-                        <InputForm title='Link' className='border-2 h-4 m-0 p-0' onChange={handleChange} value={form.title} htmlFor='title' type='text' />
-                    </div>
+                            <div className="link">
+                                <InputForm htmlFor='link' title='Link' className='border-2 h-4 m-0 p-0' onChange={(e: any) => handleChangeSocial(index, 'account_id', e.target.value)} value={account.account_id} type='text' />
+                            </div>
 
-                    <AiOutlinePlusCircle
-                        className="button-add-more  cursor-pointer"
-                        size={30}
-                    />
+                            <div className="flex items-center">
+                                {/* Tombol Tambah */}
+                                <AiOutlinePlusCircle
+                                    className="button-add-more cursor-pointer"
+                                    size={30}
+                                    onClick={handleAddSocialAccount}
+                                />
+                                {/* Tombol Hapus */}
+                                {form.social_accounts.length > 1 && (
+                                    <IoIosClose
+                                        className="delete-array cursor-pointer"
+                                        color="red"
+                                        size={30}
+                                        onClick={() => handleDeleteSocialAccount(index)}
+                                    />
+                                )}
+                            </div>
+
+
+
+                        </div>
+                    ))}
                 </div>
 
-                {form.social_accounts.map((account, index) => (
-                    <div key={index} className="flex items-center gap-3 mb-3 relative">
-                        {/* Dropdown Platform */}
-                        <Autocomplete
-                            isRequired
-                            className="max-w-xs rounded-lg border-2 "
-                            defaultItems={socialPlatforms}
-                            onSelectionChange={(selected) => handleDropdownSelection(String(selected), index)}
-                            size='sm'
-                        >
-                            {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
-                        </Autocomplete>
-
-                        {/* Input Link */}
-                        <input
-                            type="text"
-                            className="border-2 p-2 w-full"
-                            value={account.account_id}
-                            onChange={(e) => handleChangeSocial(index, 'account_id', e.target.value)}
-                            placeholder="Masukkan ID akun"
-                        />
-
-                        {/* Tombol Tambah */}
-                        <AiOutlinePlusCircle
-                            className="button-add-more cursor-pointer"
-                            size={30}
-                            onClick={handleAddSocialAccount}
-                        />
-
-                        {/* Tombol Hapus */}
-                        {form.social_accounts.length > 1 && (
-                            <IoIosClose
-                                className="delete-array absolute cursor-pointer -top-2 -right-8"
-                                color="red"
-                                size={30}
-                                onClick={() => handleDeleteSocialAccount(index)}
-                            />
-                        )}
-                    </div>
-                ))}
 
 
                 <div className="desc  mt-6">
@@ -435,7 +465,7 @@ const Page = (props: Props) => {
 
 
                 <div className="flex justify-end mt-4">
-                    <ButtonPrimary className='py-1 px-4 rounded-lg '>Kirim</ButtonPrimary>
+                    <ButtonPrimary className='py-1 px-4 rounded-lg ' onClick={handleCreateContent}>Kirim</ButtonPrimary>
                 </div>
 
             </Card >
