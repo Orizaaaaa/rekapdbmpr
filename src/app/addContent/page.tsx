@@ -16,6 +16,7 @@ import { formatDate, formatDateStr } from '@/utils/helper'
 import { parseDate } from '@internationalized/date'
 import { IoIosClose } from 'react-icons/io'
 import { postMediaArray } from '@/api/imagePost'
+import { createContent } from '@/api/content'
 
 type Props = {}
 
@@ -239,23 +240,23 @@ const Page = (props: Props) => {
 
             console.log(data);
 
-            // Buat galeri dengan data yang telah diperbarui
-            // createContent(data, (status: any, result: any) => {
-            //     if (status) {
-            //         console.log(result);
-            //         setLoading(false);
-            //         setForm({
-            //             title: '',
-            //             content: '',
-            //             media: [],
-            //             hashtags: [''], // Default ada satu input kosong
-            //             mentions: [''], // Default ada satu input kosong
-            //             scheduled_at: '',
-            //             social_accounts: [{ platform: '', account_id: '' }],
-            //         });
 
-            //     }
-            // });
+            createContent(data, (status: any, result: any) => {
+                if (status) {
+                    console.log(result);
+                    setLoading(false);
+                    setForm({
+                        title: '',
+                        content: '',
+                        media: [] as File[],
+                        hashtags: [''], // Default ada satu input kosong
+                        mentions: [''], // Default ada satu input kosong
+                        scheduled_at: '',
+                        social_accounts: [{ platform: '', account_id: '' }],
+                    });
+
+                }
+            });
         } catch (error) {
             console.error("Error creating gallery:", error);
         }
