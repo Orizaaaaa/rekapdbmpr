@@ -63,14 +63,6 @@ const Page = (props: Props) => {
         });
     };
 
-    const buttonChangedTypeContent = (name: string) => {
-        if (name === 'tiktok') {
-            setForm({ ...form, typeContent: 'tiktok' })
-        } else {
-            setForm({ ...form, typeContent: 'instagram' })
-        }
-    }
-
     console.log(data)
     return (
 
