@@ -16,6 +16,13 @@ import { useRouter } from 'next/navigation'
 type Props = {}
 
 const Page = (props: Props) => {
+
+    const [form, setForm] = React.useState({
+        name: [] as File[],
+        link: '',
+        description: '',
+        typeContent: 'instagram'
+    })
     // const { data } = useSWR(`${url}/account/list`, fetcher, {
     //     keepPreviousData: true,
     // });
@@ -53,6 +60,14 @@ const Page = (props: Props) => {
         });
     };
 
+    const buttonChangedTypeContent = (name: string) => {
+        if (name === 'tiktok') {
+            setForm({ ...form, typeContent: 'tiktok' })
+        } else {
+            setForm({ ...form, typeContent: 'instagram' })
+        }
+    }
+
     return (
 
         <DefaultLayout>
@@ -66,6 +81,20 @@ const Page = (props: Props) => {
                         size='sm' onChange={setDate} value={date} aria-label='datepicker' className="max-w-[284px] bg-bone border-2 border-primary rounded-lg"
                     />
 
+                </div>
+
+                <div className="flex gap-3">
+                    <button onClick={() => buttonChangedTypeContent('instagram')}
+                        className={`${form.typeContent === 'instagram' ? 'bg-black text-white' : 'border-black  text-black bg-white'} py-1 px-4 rounded-lg border-2
+                         `}>
+                        Instagram
+                    </button>
+
+                    <button onClick={() => buttonChangedTypeContent('tiktok')}
+                        className={`${form.typeContent === 'tiktok' ? 'bg-black text-white' : 'border-black  text-black bg-white'} py-1 px-4 rounded-lg border-2
+                        `}>
+                        Tiktok
+                    </button>
                 </div>
 
             </Card>
