@@ -16,6 +16,8 @@ import { handleCopy } from '@/utils/helper'
 import useSWR from 'swr'
 import { url } from '@/api/auth'
 import { fetcher } from '@/api/fetcher'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination } from 'swiper/modules'
 
 type Props = {}
 
@@ -39,7 +41,30 @@ const Page = (props: Props) => {
                 <div className="grid grid-cols-2 gap-3 my-4">
 
                     <div>
-                        <img className='rounded-lg' src="https://akcdn.detik.net.id/visual/2021/02/25/mark-zuckerbergbritannicacom_11.jpeg?w=480&q=90" alt="" />
+                        <div className="cover group relative" >
+                            <Swiper
+                                spaceBetween={10}
+                                pagination={{
+                                    clickable: true,
+                                }}
+                                modules={[Pagination]}
+                                className="mySwiper h-full rounded-lg"
+                            >
+                                {dataArray?.media?.map((image: any, index: any) => (
+                                    <SwiperSlide key={index}>
+                                        <div className="relative mx-auto">
+                                            <img
+                                                src={image} // Mengambil URL langsung dari `image`
+                                                alt={`preview-${image}`}
+                                                className="w-auto h-[50vh]  rounded-md  mx-auto"
+                                            />
+
+                                        </div>
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                        </div>
+
                         <div className="flex items-center gap-5 mt-5">
                             <FaFilePen color='gray' size={20} />
                             <p>Oriza Sativa</p>
@@ -63,7 +88,7 @@ const Page = (props: Props) => {
                         ))}</p>
                         <div className="hastag mt-5">
                             {dataArray?.hashtags?.map((tag: string, index: number) => (
-                                <span key={index} className=" py-1 bg-gray-200 rounded-md text-sm text-zinc-400">
+                                <span key={index} className=" py-1 pr-2 bg-gray-200 rounded-md text-sm text-zinc-400">
                                     #{tag}
                                 </span>
                             ))}
