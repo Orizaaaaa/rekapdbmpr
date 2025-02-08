@@ -9,14 +9,16 @@ import { dateFirst, formatDate, formatDateStr } from '@/utils/helper'
 import { parseDate } from '@internationalized/date'
 import { Card, DateRangePicker, useDisclosure } from '@nextui-org/react'
 import React, { useState } from 'react'
-
+import useSWR from "swr";
 import CardPost from '@/components/fragemnts/cardPost/CardPost'
 import { useRouter } from 'next/navigation'
 
 type Props = {}
 
 const Page = (props: Props) => {
-
+    const { data } = useSWR(`${url}/content/`, fetcher, {
+        keepPreviousData: true,
+    });
     const [form, setForm] = React.useState({
         name: [] as File[],
         link: '',
@@ -68,6 +70,7 @@ const Page = (props: Props) => {
         }
     }
 
+    console.log(data)
     return (
 
         <DefaultLayout>
@@ -101,9 +104,23 @@ const Page = (props: Props) => {
 
             <div className="my-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-                    <CardPost buttonView={() => router.push('/contents/8')}
-                        image='https://akcdn.detik.net.id/visual/2021/02/25/mark-zuckerbergbritannicacom_11.jpeg?w=480&q=90' typePost='tiktok' text='Mark Elliot Zuckerberg adalah seorang...' />
-                    <CardPost buttonView={() => router.push('/contents/8')} image='https://www.family.abbott/content/dam/an/familyabbott/id-id/ensure/tools-and-resources/tips-on-how-to-live-strong/fitness/light-moderate-and-vigorous-physical-activities/143_Mastheadl.jpg.jpg' typePost='ig' text='Olahraga adalah salah satu kegiatan...' />
+                    {data?.data?.map((item: any, index: number) => {
+                        const typePost = item.social_accounts?.[0]?.platform || 'unknown';
+
+                        return (
+                            <CardPost
+                                key={index}
+                                buttonView={() => router.push(`/contents/${item._id}`)}
+                                title={item.title}
+                                image={item?.media?.[0]}
+                                typePost={typePost}
+                                text={item.content}
+                            />
+                        );
+                    })}
+
+
+
                 </div>
 
             </div>

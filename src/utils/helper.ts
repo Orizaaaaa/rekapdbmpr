@@ -1,4 +1,9 @@
-
+export function formatText(text: string, maxLength: number = 34): string {
+    if (text.length > maxLength) {
+        return text.slice(0, maxLength) + "...";
+    }
+    return text;
+}
 export const formatDate = (tanggal: any) => {
     const date = new Date(tanggal);  // Pastikan 'tanggal' adalah objek Date
 
