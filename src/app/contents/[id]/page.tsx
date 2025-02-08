@@ -5,7 +5,7 @@ import CardBox from '@/components/fragemnts/cardBox/CardBox'
 import ModalAlert from '@/components/fragemnts/modal/modalAlert'
 import DefaultLayout from '@/components/layouts/DefaultLayout'
 import { useDisclosure } from '@nextui-org/react'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import React from 'react'
 import { CiEdit } from 'react-icons/ci'
 import { FaRegTrashAlt } from 'react-icons/fa'
@@ -13,16 +13,25 @@ import { PiTrashLight } from "react-icons/pi";
 import { FaFilePen } from 'react-icons/fa6'
 import { IoCloudDownloadOutline, IoLinkSharp } from 'react-icons/io5'
 import { handleCopy } from '@/utils/helper'
+import useSWR from 'swr'
+import { url } from '@/api/auth'
+import { fetcher } from '@/api/fetcher'
 
 type Props = {}
 
 const Page = (props: Props) => {
     const router = useRouter()
+    const { id }: any = useParams()
+    const { data } = useSWR(`${url}/content/${id}`, fetcher, {
+        keepPreviousData: true,
+    });
     // delete article
     const { isOpen: isWarningOpen, onOpen: onWarningOpen, onClose: onWarningClose } = useDisclosure();
     const openModalDelete = () => {
         onWarningOpen()
     }
+    const dataArray = data?.data
+    console.log(dataArray);
 
     return (
         <DefaultLayout>
@@ -45,10 +54,22 @@ const Page = (props: Props) => {
 
 
                     </div>
+                    <div className="text-content">
+                        <h1 className='text-lg font-semibold' > {dataArray?.title}</h1>
+                        <p>{dataArray?.content} {dataArray?.mentions?.map((tag: string, index: number) => (
+                            <span key={index} className=" py-1 bg-gray-200 rounded-md text-sm text-zinc-400">
+                                @{tag}
+                            </span>
+                        ))}</p>
+                        <div className="hastag mt-5">
+                            {dataArray?.hashtags?.map((tag: string, index: number) => (
+                                <span key={index} className=" py-1 bg-gray-200 rounded-md text-sm text-zinc-400">
+                                    #{tag}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
 
-                    <p>Mark Zuckerberg adalah seorang programmer dan pengusaha teknologi yang mendirikan Facebook pada tahun 2004 bersama teman-temannya di Harvard, yaitu Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, dan Chris Hughes. Awalnya, Facebook dibuat sebagai platform sosial untuk mahasiswa Harvard, tetapi dengan cepat berkembang dan menjadi media sosial terbesar di dunia.
-
-                        Pada tahun 2012, Facebook melakukan IPO dan menjadi salah satu perusahaan teknologi terbesar. Zuckerberg terus mengembangkan perusahaannya dengan mengakuisisi platform lain seperti Instagram, WhatsApp, dan Oculus VR.</p>
                 </div>
             </Card>
 
