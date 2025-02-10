@@ -22,6 +22,28 @@ export const getDetailContent = async (id: string, callback: any) => {
         });
 }
 
+
+
+export const deleteContent = async (id: string, callback: any) => {
+    await axiosInterceptor.delete(`/content/${id}`)
+        .then((result) => {
+            callback(result.data)
+        }).catch((err) => {
+            callback(err);
+            console.log(err);
+        });
+}
+
+export const updateContent = async (id: string, form: any, callback: any) => {
+    await axiosInterceptor.put(`/content/${id}`, form)
+        .then((result) => {
+            callback(result.data)
+        }).catch((err) => {
+            callback(err);
+        });
+}
+
+
 export const socialPlatforms = [
     { key: 'facebook', label: 'Facebook' },
     { key: 'twitter', label: 'Twitter' },

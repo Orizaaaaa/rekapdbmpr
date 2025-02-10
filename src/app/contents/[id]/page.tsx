@@ -18,6 +18,8 @@ import { url } from '@/api/auth'
 import { fetcher } from '@/api/fetcher'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper/modules'
+import { deleteContent } from '@/api/content'
+import ButtonSecondary from '@/components/elements/buttonSecondary'
 
 type Props = {}
 
@@ -31,6 +33,12 @@ const Page = (props: Props) => {
     const { isOpen: isWarningOpen, onOpen: onWarningOpen, onClose: onWarningClose } = useDisclosure();
     const openModalDelete = () => {
         onWarningOpen()
+    }
+
+    const handleDelete = () => {
+        deleteContent(id, (result: any) => {
+            console.log(result);
+        })
     }
     const dataArray = data?.data
     console.log(dataArray);
@@ -102,7 +110,9 @@ const Page = (props: Props) => {
                 <h1>Apakah anda yakin ingin menghapus postingan ini ? </h1>
 
                 <div className="flex gap-3 justify-end">
-                    <ButtonPrimary onClick={onWarningClose} className='px-4 py-2 rounded-md'>Batal</ButtonPrimary>
+                    <ButtonSecondary onClick={handleDelete} className='px-4 py-1 rounded-md'>Ya</ButtonSecondary>
+                    <ButtonPrimary onClick={onWarningClose} className='px-4 py-1 rounded-md'>Batal</ButtonPrimary>
+
                     {/* <ButtonDelete onClick={handleDelete}
                         className='px-4 py-2 rounded-md flex justify-center items-center'
                     >{loadingDelete ? <Spinner className={`w-5 h-5 mx-8`} size="sm" color="white" /> : 'Ya, Hapus'}</ButtonDelete> */}

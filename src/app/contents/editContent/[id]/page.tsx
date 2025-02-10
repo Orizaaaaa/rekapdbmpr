@@ -16,7 +16,7 @@ import { formatDate, formatDateStr } from '@/utils/helper'
 import { parseDate } from '@internationalized/date'
 import { IoIosClose } from 'react-icons/io'
 import { postMediaArray } from '@/api/imagePost'
-import { createContent, getDetailContent, socialPlatforms } from '@/api/content'
+import { createContent, getDetailContent, socialPlatforms, updateContent } from '@/api/content'
 import { camera } from '@/app/image'
 import { useParams } from 'next/navigation'
 
@@ -230,7 +230,9 @@ const Page = (props: Props) => {
         setForm({ ...form, social_accounts: updatedSocialAccounts });
     };
 
-    const handleCreateContent = async () => {
+
+    // handle update belum
+    const handleUpdateContent = async () => {
         setLoading(true);
         // Cek apakah array `form.name` kosong
 
@@ -249,7 +251,7 @@ const Page = (props: Props) => {
             console.log(data);
 
 
-            createContent(data, (status: any, result: any) => {
+            updateContent(id, data, (status: any, result: any) => {
                 if (status) {
                     console.log(result);
                     setLoading(false);
@@ -480,7 +482,7 @@ const Page = (props: Props) => {
 
 
                 <div className="flex justify-end mt-4">
-                    <ButtonPrimary className='py-1 px-4 rounded-lg ' onClick={handleCreateContent}>Kirim</ButtonPrimary>
+                    <ButtonPrimary className='py-1 px-4 rounded-lg ' onClick={handleUpdateContent}>Kirim</ButtonPrimary>
                 </div>
 
             </Card >
