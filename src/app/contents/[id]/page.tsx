@@ -38,6 +38,10 @@ const Page = (props: Props) => {
     const handleDelete = () => {
         deleteContent(id, (result: any) => {
             console.log(result);
+            if (result) {
+                router.push('/contents')
+            }
+
         })
     }
     const dataArray = data?.data
