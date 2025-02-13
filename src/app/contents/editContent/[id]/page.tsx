@@ -60,7 +60,7 @@ const Page = (props: Props) => {
                 setForm(result)
                 console.log(result);
 
-                setSelectedDate(parseDate(result.scheduled_at))
+                setSelectedDate(parseDate(formatDate(result.scheduled_at)))
             }
         })
     }, []);
