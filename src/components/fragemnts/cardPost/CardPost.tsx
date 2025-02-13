@@ -37,11 +37,11 @@ const CardPost = ({ image, text, title, typePost, buttonView, link }: Props) => 
         <div className="rounded-lg bg-white shadow-default dark:border-strokedark flex flex-col h-full">
             {/* Image Section */}
             <div className="relative w-full h-65">
-                <img className="w-full h-full object-cover rounded-lg" src={image} alt="" />
+                <img className="w-full h-full object-cover rounded-t-lg" src={image} alt="" />
             </div>
 
             {/* Content Section */}
-            <div className="content flex flex-col flex-1 p-4">
+            <div className="content flex flex-col flex-1 p-2">
                 <h1 className="text-md font-medium">{formatText(title, 30)}</h1>
                 <p className="text-sm flex-1">{formatText(text, 70)}</p>
 
