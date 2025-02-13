@@ -50,7 +50,7 @@ const Page = (props: Props) => {
     return (
         <DefaultLayout>
             <Card>
-                <div className="grid grid-cols-2 gap-3 my-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 my-4">
 
                     <div>
                         <div className="cover group relative" >
