@@ -18,7 +18,7 @@ import { IoIosClose } from 'react-icons/io'
 import { postMediaArray } from '@/api/imagePost'
 import { createContent, getDetailContent, socialPlatforms, updateContent } from '@/api/content'
 import { camera } from '@/app/image'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 
 type Props = {}
 
@@ -39,6 +39,7 @@ interface Content {
 
 
 const Page = (props: Props) => {
+    const router = useRouter()
     const { id }: any = useParams()
     const dateNow = new Date();
     const [selectedDate, setSelectedDate] = useState(parseDate((formatDate(dateNow))))
@@ -233,44 +234,42 @@ const Page = (props: Props) => {
 
     // handle update belum
     const handleUpdateContent = async () => {
-        setLoading(true);
-        // Cek apakah array `form.name` kosong
-
-        try {
-            // Kirim gambar dan dapatkan URL-nya
-            const urls: string[] = await postMediaArray({ media: form.media });
-            console.log(urls);
-
-
-            // Buat data baru dengan URL gambar yang telah diunggah
-            const data = {
-                ...form,
-                media: urls,
-            };
-
-            console.log(data);
-
-
-            updateContent(id, data, (status: any, result: any) => {
-                if (status) {
-                    console.log(result);
-                    setLoading(false);
-                    setForm({
-                        title: '',
-                        content: '',
-                        media: [] as File[],
-                        hashtags: [''], // Default ada satu input kosong
-                        mentions: [''], // Default ada satu input kosong
-                        scheduled_at: '',
-                        social_accounts: [{ platform: '', account_id: '' }],
-                    });
-
-                }
-            });
-        } catch (error) {
-            console.error("Error creating gallery:", error);
+        if (form.media.length === 0) {
+            setErrorMsg((prev) => ({
+                ...prev,
+                imageUpdate: '*Gambar tidak boleh kosong',
+            }));
+            setLoading(false);
+            return;
         }
 
+        setLoading(true);
+
+        // Pisahkan URL lama dan file baru
+        const existingUrls = form.media.filter((item: any): item is string => typeof item === 'string');
+        const newFiles = form.media.filter((item: any): item is File => item instanceof File);
+
+        // Upload gambar baru ke Cloudinary jika ada
+        let uploadedUrls: string[] = [];
+        if (newFiles.length > 0) {
+            uploadedUrls = (await postMediaArray({ media: newFiles })).filter(Boolean); // Filter null values
+        }
+
+        // Gabungkan URL lama dan baru
+        const allUrls = [...existingUrls, ...uploadedUrls];
+
+        // Data untuk dikirim ke API
+        const data = {
+            ...form,
+            media: allUrls, // Perbaikan: Sebelumnya `name`, sekarang `media`
+        };
+
+        // Panggil fungsi updateContent
+        await updateContent(id, data, (result: any) => {
+            console.log("Update berhasil:", result);
+            setLoading(false);
+            router.push(`/contents/${id}`)
+        });
     };
 
 

@@ -94,7 +94,7 @@ const Page = (props: Props) => {
                     <div className="text-content">
                         <h1 className='text-lg font-semibold' > {dataArray?.title}</h1>
                         <p>{dataArray?.content} {dataArray?.mentions?.map((tag: string, index: number) => (
-                            <span key={index} className=" py-1 bg-gray-200 rounded-md text-sm text-zinc-400">
+                            <span key={index} className=" py-1 pr-2 bg-gray-200 rounded-md text-sm text-zinc-400">
                                 @{tag}
                             </span>
                         ))}</p>

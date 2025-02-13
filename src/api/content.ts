@@ -38,8 +38,11 @@ export const updateContent = async (id: string, form: any, callback: any) => {
     await axiosInterceptor.put(`/content/${id}`, form)
         .then((result) => {
             callback(result.data)
+            console.log(result);
+
         }).catch((err) => {
             callback(err);
+            console.log(err);
         });
 }
 
