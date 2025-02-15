@@ -100,7 +100,7 @@ const Page = (props: Props) => {
                         return (
                             <CardPost
                                 key={index}
-                                buttonView={() => router.push(`/contents/${item._id}`)}
+                                buttonView={() => router.push(`/contents/${item.id}`)}
                                 title={item.title}
                                 image={item?.media?.[0]}
                                 typePost={typePost}
