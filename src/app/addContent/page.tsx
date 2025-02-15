@@ -23,6 +23,7 @@ type Props = {}
 interface SocialAccount {
     platform: string;
     account_id: string;
+    post_url: string
 }
 
 interface Content {
@@ -46,7 +47,7 @@ const Page = (props: Props) => {
         hashtags: [''], // Default ada satu input kosong
         mentions: [''], // Default ada satu input kosong
         scheduled_at: '',
-        social_accounts: [{ platform: '', account_id: '' }],
+        social_accounts: [{ platform: '', account_id: '6666666', post_url: '' }],
     });
 
     const [loading, setLoading] = useState(false)
@@ -187,7 +188,7 @@ const Page = (props: Props) => {
     const handleAddSocialAccount = () => {
         setForm((prev: any) => ({
             ...prev,
-            social_accounts: [...prev.social_accounts, { platform: '', account_id: '' }],
+            social_accounts: [...prev.social_accounts, { platform: '', account_id: '6666666', post_url: '' }],
         }));
     };
 
@@ -245,7 +246,7 @@ const Page = (props: Props) => {
                         hashtags: [''], // Default ada satu input kosong
                         mentions: [''], // Default ada satu input kosong
                         scheduled_at: '',
-                        social_accounts: [{ platform: '', account_id: '' }],
+                        social_accounts: [{ platform: '', account_id: '', post_url: '' }],
                     });
 
                 }
@@ -422,7 +423,7 @@ const Page = (props: Props) => {
                             </div>
 
                             <div className="link">
-                                <InputForm htmlFor='link' title='Link' className='border-2 h-4 m-0 p-0' onChange={(e: any) => handleChangeSocial(index, 'account_id', e.target.value)} value={account.account_id} type='text' />
+                                <InputForm htmlFor='link' title='Link' className='border-2 h-4 m-0 p-0' onChange={(e: any) => handleChangeSocial(index, 'post_url', e.target.value)} value={account.post_url} type='text' />
                             </div>
 
                             <div className="flex items-center">
