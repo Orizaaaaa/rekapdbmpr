@@ -48,8 +48,8 @@ export const updateContent = async (id: string, form: any, callback: any) => {
 
 
 export const socialPlatforms = [
-    { key: 'facebook', label: 'Facebook' },
-    { key: 'twitter', label: 'Twitter' },
-    { key: 'instagram', label: 'Instagram' },
-    { key: 'tiktok', label: 'TikTok' },
+    { key: 'facebook', label: 'facebook' },
+    { key: 'twitter', label: 'twitter' },
+    { key: 'instagram', label: 'instagram' },
+    { key: 'tiktok', label: 'tikTok' },
 ];
