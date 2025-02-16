@@ -79,7 +79,7 @@ const Page = (props: Props) => {
 
                         <div className="flex items-center gap-5 mt-5">
                             <FaFilePen color='gray' size={20} />
-                            <p>Oriza Sativa</p>
+                            <p>{dataArray?.user_id?.username}</p>
                         </div>
 
                         <div className="flex justify-between  bg-slate-900 rounded-lg mt-4 p-3">
