@@ -96,15 +96,18 @@ const Page = (props: Props) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
                     {data?.data?.map((item: any, index: number) => {
                         const typePost = item.social_accounts?.[0]?.platform || 'unknown';
+                        const url = item.social_accounts?.[0]?.post_url || 'unknown';
 
                         return (
                             <CardPost
                                 key={index}
+                                link={url}
                                 buttonView={() => router.push(`/contents/${item.id}`)}
                                 title={item.title}
                                 image={item?.media?.[0]}
                                 typePost={typePost}
                                 text={item.content}
+                                buttonEdit={item.id}
                             />
                         );
                     })}

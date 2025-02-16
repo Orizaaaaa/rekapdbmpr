@@ -12,10 +12,11 @@ type Props = {
     typePost: string
     buttonView?: () => void
     title: string
+    buttonEdit: any
     link?: string
 }
 
-const CardPost = ({ image, text, title, typePost, buttonView, link }: Props) => {
+const CardPost = ({ image, text, title, typePost, buttonView, link, buttonEdit }: Props) => {
     const router = useRouter()
 
     const socialMedia = (social: string) => {
@@ -69,7 +70,7 @@ const CardPost = ({ image, text, title, typePost, buttonView, link }: Props) => 
                 />
                 <CiEdit
                     className="cursor-pointer"
-                    onClick={() => router.push('contents/editContent/1')}
+                    onClick={() => router.push(`contents/editContent/${buttonEdit}`)}
                     color="white"
                     size={24}
                 />
