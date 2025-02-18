@@ -8,18 +8,17 @@ import DefaultLayout from '@/components/layouts/DefaultLayout'
 import { dateFirst, formatDate, formatDateStr } from '@/utils/helper'
 import { parseDate } from '@internationalized/date'
 import { Autocomplete, AutocompleteItem, Card, DateRangePicker, useDisclosure } from '@nextui-org/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useSWR from "swr";
 import CardPost from '@/components/fragemnts/cardPost/CardPost'
 import { useRouter } from 'next/navigation'
-import { socialPlatforms } from '@/api/content'
+import { getContents, socialPlatforms } from '@/api/content'
 
 type Props = {}
 
 const Page = (props: Props) => {
-    const { data } = useSWR(`${url}/content/`, fetcher, {
-        keepPreviousData: true,
-    });
+    const dateNow = new Date();
+    const [data, setData] = useState([])
     const [form, setForm] = React.useState({
         name: [] as File[],
         link: '',
@@ -30,7 +29,6 @@ const Page = (props: Props) => {
     //     keepPreviousData: true,
     // });
     const router = useRouter()
-    const dateNow = new Date();
     let [date, setDate] = React.useState({
         start: parseDate((formatDate(dateFirst))),
         end: parseDate((formatDate(dateNow))),
@@ -41,7 +39,13 @@ const Page = (props: Props) => {
 
 
 
+    useEffect(() => {
 
+        getContents(startDate, endDate, (result: any) => {
+            setData(result.data);
+        });
+
+    }, [startDate, endDate]);
 
     const handleDownload = () => {
         downloadJurnal(startDate, endDate, (result: any) => {
@@ -94,7 +98,7 @@ const Page = (props: Props) => {
 
             <div className="my-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-                    {data?.data?.map((item: any, index: number) => {
+                    {data?.map((item: any, index: number) => {
                         const typePost = item.social_accounts?.[0]?.platform || 'unknown';
                         const url = item.social_accounts?.[0]?.post_url || 'unknown';
 

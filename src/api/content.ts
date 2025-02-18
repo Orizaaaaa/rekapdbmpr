@@ -1,5 +1,16 @@
 import { axiosInterceptor } from "./axiosInterceptor";
 
+
+export const getContents = (startDate: string, endDate: string, callback: any) => {
+    axiosInterceptor.get('/content/', { params: { start_date: startDate, end_date: endDate } })
+        .then((result) => {
+            callback(result.data)
+        }).catch((err) => {
+            callback(err);
+        });
+
+}
+
 export const createContent = async (form: any, callback: any) => {
     await axiosInterceptor.post('/content', form)
         .then((result) => {
