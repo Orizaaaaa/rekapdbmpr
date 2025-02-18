@@ -23,6 +23,18 @@ export const createContent = async (form: any, callback: any) => {
 
 }
 
+export const downloadRekap = (startDate: string, endDate: string, callback: any) => {
+    axiosInterceptor.get(`/content/export-excel`, {
+        params: { startDate, endDate },
+        responseType: 'blob'  // Mengharapkan response sebagai Blob (file)
+    })
+        .then((result) => {
+            callback(result.data)
+        }).catch((err) => {
+            callback(err);
+        });
+}
+
 export const getDetailContent = async (id: string, callback: any) => {
     await axiosInterceptor.get(`/content/${id}`)
         .then((result) => {

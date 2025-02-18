@@ -1,7 +1,6 @@
 'use client'
 import { url } from '@/api/auth'
 import { fetcher } from '@/api/fetcher'
-import { downloadJurnal } from '@/api/transaction'
 import ButtonSecondary from '@/components/elements/buttonSecondary'
 import ModalDefault from '@/components/fragemnts/modal/modal'
 import DefaultLayout from '@/components/layouts/DefaultLayout'
@@ -12,7 +11,7 @@ import React, { useEffect, useState } from 'react'
 import useSWR from "swr";
 import CardPost from '@/components/fragemnts/cardPost/CardPost'
 import { useRouter } from 'next/navigation'
-import { getContents, socialPlatforms } from '@/api/content'
+import { downloadRekap, getContents, socialPlatforms } from '@/api/content'
 
 type Props = {}
 
@@ -48,13 +47,13 @@ const Page = (props: Props) => {
     }, [startDate, endDate]);
 
     const handleDownload = () => {
-        downloadJurnal(startDate, endDate, (result: any) => {
+        downloadRekap(startDate, endDate, (result: any) => {
             if (result instanceof Blob) {
                 // Jika hasil adalah Blob, kita lanjutkan dengan download
                 const url = window.URL.createObjectURL(result);
                 const link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', `jurnal-${startDate}-${endDate}.xlsx`);
+                link.setAttribute('download', `rekapdbmr-${startDate}-${endDate}.xlsx`);
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
