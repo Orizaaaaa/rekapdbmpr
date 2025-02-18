@@ -115,7 +115,7 @@ export const GetLabaRugi = (startDate: string, endDate: string, callback: any) =
 }
 
 export const getDataCart = (callback: any) => {
-    axiosInterceptor.get('/balance/finance-data')
+    axiosInterceptor.get('/dashboard/content-per-month')
         .then((result) => {
             callback(result.data)
         }).catch((err) => {
