@@ -18,7 +18,6 @@ const CardBox = ({ image, value, title }: Props) => {
                     <Image className='w-10 h-10' src={image} alt="dashboard" />
                 </div>
                 <h1 className='text-2xl font-bold my-3' >{value}</h1>
-                <p className='text-slate-500' ><span className='text-green-500 ' >10%</span> 1 minggu terakhir</p>
             </div>
         </Card>
     )

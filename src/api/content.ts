@@ -24,6 +24,7 @@ export const getDetailContent = async (id: string, callback: any) => {
 
 
 
+
 export const deleteContent = async (id: string, callback: any) => {
     await axiosInterceptor.delete(`/content/${id}`)
         .then((result) => {
@@ -53,3 +54,4 @@ export const socialPlatforms = [
     { key: 'instagram', label: 'instagram' },
     { key: 'tiktok', label: 'tikTok' },
 ];
+
