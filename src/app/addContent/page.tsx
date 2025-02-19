@@ -329,7 +329,7 @@ const Page = (props: Props) => {
                                 onChange={(e) => handleMediaChange(e, 'add')}
                             />
                         </ButtonPrimary>
-                        <ButtonSecondary className='rounded-md  py-2 px-1' onClick={() => setForm(prevForm => ({ ...prevForm, name: [] }))} >Hapus Semua</ButtonSecondary>
+                        <ButtonSecondary className='rounded-md  py-2 px-1' onClick={() => setForm(prevForm => ({ ...prevForm, media: [] }))} >Hapus Semua Media</ButtonSecondary>
                     </div>
 
                 </div>

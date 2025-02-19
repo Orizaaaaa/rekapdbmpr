@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react'
 import CardPost from '@/components/fragemnts/cardPost/CardPost'
 import { useRouter } from 'next/navigation'
 import { downloadRekap, getContents, socialPlatforms } from '@/api/content'
+import Result_ from 'postcss/lib/result'
 
 type Props = {}
 
@@ -38,9 +39,13 @@ const Page = (props: Props) => {
 
         getContents(startDate, endDate, (result: any) => {
             setData(result.data);
+            console.log(result.data);
+
         });
 
     }, [startDate, endDate]);
+
+
 
     const handleDownload = () => {
         downloadRekap(startDate, endDate, (result: any) => {
