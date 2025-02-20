@@ -16,7 +16,30 @@ import { fetcher } from '@/api/fetcher'
 import { url } from '@/api/auth'
 
 type Props = {}
-
+interface SocialAccount {
+    platform: string;
+    post_url: string;
+    status: string;
+    _id: string;
+}
+interface Post {
+    content: string;
+    createdAt: string;
+    hashtags: string[];
+    id: string;
+    media: string[];
+    mentions: string[];
+    scheduled_at: string;
+    social_accounts: SocialAccount[];
+    status: string;
+    title: string;
+    updatedAt: string;
+    user_id: {
+        _id: string;
+        username: string;
+        email: string;
+    };
+}
 const Page = (props: Props) => {
     const { data: dataTotal } = useSWR(`${url}/dashboard/summary`, fetcher, {
         keepPreviousData: true,
@@ -118,8 +141,20 @@ const Page = (props: Props) => {
             console.error("Error deleting content:", error);
         }
     };
+    const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
+    const handlePlatformChange = (value: any) => {
+        setSelectedPlatform(value);
+    };
 
-    console.log(dataTotal)
+    const filteredData = dataTotal
+        ? data.filter((item: Post) =>
+            selectedPlatform === null // Jika tidak ada platform yang dipilih
+                ? true // Tampilkan semua data
+                : item?.social_accounts?.some((account: SocialAccount) => account?.platform === selectedPlatform) // Filter berdasarkan platform
+        )
+        : [];
+
+    console.log(filteredData)
     return (
 
         <DefaultLayout>
@@ -141,7 +176,8 @@ const Page = (props: Props) => {
                     className="max-w-xs rounded-lg border-2 "
                     defaultItems={socialPlatforms}
                     size='sm'
-                    defaultSelectedKey={'instagram'}
+                    onSelectionChange={handlePlatformChange}
+                    placeholder='Filter berdasarkan platform'
                 >
                     {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
                 </Autocomplete>
@@ -150,7 +186,7 @@ const Page = (props: Props) => {
 
             <div className="my-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-                    {data?.map((item: any, index: number) => {
+                    {filteredData?.map((item: any, index: number) => {
                         const typePost = item.social_accounts?.[0]?.platform || 'unknown';
                         const url = item.social_accounts?.[0]?.post_url || 'unknown';
 
