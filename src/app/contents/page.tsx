@@ -8,7 +8,7 @@ import React, { use, useEffect, useState } from 'react'
 import CardPost from '@/components/fragemnts/cardPost/CardPost'
 import { useRouter } from 'next/navigation'
 import { deleteContent, downloadRekap, getContents, socialPlatforms } from '@/api/content'
-import Result_ from 'postcss/lib/result'
+import toast, { Toaster } from 'react-hot-toast';
 import ModalAlert from '@/components/fragemnts/modal/modalAlert'
 import ButtonPrimary from '@/components/elements/buttonPrimary'
 import useSWR from 'swr'
@@ -76,21 +76,48 @@ const Page = (props: Props) => {
         onWarningOpen()
     }
 
+
     const handleDelete = async () => {
-        await deleteContent(id, (result: any) => {
-            console.log(result);
-            if (result) {
-                getContents(startDate, endDate, (result: any) => {
-                    setData(result.data);
-                    console.log(result.data);
+        // Tampilkan toast loading sebelum proses delete dimulai
+        const toastId = toast.loading("Menghapus konten...");
 
-                });
-                onWarningClose()
+        try {
+            // Panggil fungsi deleteContent
+            await deleteContent(id, (result: any) => {
+                console.log(result);
 
-            }
+                if (result) {
+                    // Hapus toast loading
+                    toast.dismiss(toastId);
 
-        })
-    }
+                    // Tampilkan toast sukses
+                    toast.success("Konten berhasil dihapus!", { duration: 4000 });
+
+                    // Ambil data terbaru setelah delete
+                    getContents(startDate, endDate, (result: any) => {
+                        setData(result.data);
+                        console.log(result.data);
+                    });
+
+                    // Tutup modal atau tampilan peringatan
+                    onWarningClose();
+                } else {
+                    // Hapus toast loading
+                    toast.dismiss(toastId);
+
+                    // Tampilkan toast error jika delete gagal
+                    toast.error("Gagal menghapus konten!", { duration: 4000 });
+                }
+            });
+        } catch (error) {
+            // Hapus toast loading
+            toast.dismiss(toastId);
+
+            // Tampilkan toast error jika terjadi exception
+            toast.error("Terjadi kesalahan saat menghapus konten!", { duration: 4000 });
+            console.error("Error deleting content:", error);
+        }
+    };
 
     console.log(dataTotal)
     return (
@@ -156,7 +183,7 @@ const Page = (props: Props) => {
                     <ButtonPrimary onClick={onWarningClose} className='px-4 py-1 rounded-md'>Batal</ButtonPrimary>
                 </div>
             </ModalAlert>
-
+            <Toaster />
         </DefaultLayout>
 
     )
