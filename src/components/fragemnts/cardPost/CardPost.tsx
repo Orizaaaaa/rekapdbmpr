@@ -1,10 +1,16 @@
 'use client'
-import { FaInstagram } from 'react-icons/fa6'
+import { FaInstagram, FaTrashCan } from 'react-icons/fa6'
 import { IoCloudDownloadOutline, IoLinkSharp } from 'react-icons/io5'
 import { RiFacebookCircleLine, RiTiktokLine, RiTwitterLine } from 'react-icons/ri'
 import { CiEdit } from 'react-icons/ci'
 import { formatText, handleCopy } from '@/utils/helper'
 import { useRouter } from 'next/navigation'
+import ModalAlert from '../modal/modalAlert'
+import ButtonSecondary from '@/components/elements/buttonSecondary'
+import ButtonPrimary from '@/components/elements/buttonPrimary'
+import { useDisclosure } from '@nextui-org/react'
+import { deleteContent } from '@/api/content'
+import { FaRegTrashAlt } from 'react-icons/fa'
 
 type Props = {
     image: string
@@ -14,10 +20,26 @@ type Props = {
     title: string
     buttonEdit: any
     link?: string
+    idDelete: string
 }
 
-const CardPost = ({ image, text, title, typePost, buttonView, link, buttonEdit }: Props) => {
+const CardPost = ({ image, text, title, typePost, buttonView, link, buttonEdit, idDelete }: Props) => {
     const router = useRouter()
+    const { isOpen: isWarningOpen, onOpen: onWarningOpen, onClose: onWarningClose } = useDisclosure();
+
+    const openModalDelete = () => {
+        onWarningOpen()
+    }
+    const handleDelete = () => {
+        deleteContent(idDelete, (result: any) => {
+            console.log(result);
+            if (result) {
+                console.log(result);
+                router.push('/contents')
+            }
+
+        })
+    }
 
     const socialMedia = (social: string) => {
         switch (social) {
@@ -61,7 +83,7 @@ const CardPost = ({ image, text, title, typePost, buttonView, link, buttonEdit }
 
             {/* Action Buttons */}
             <div className="flex justify-between bg-slate-900 rounded-lg p-3 mt-auto">
-                <IoCloudDownloadOutline color="white" size={24} />
+                <FaRegTrashAlt className="cursor-pointer" color="white" size={24} onClick={openModalDelete} />
                 <IoLinkSharp
                     className="cursor-pointer"
                     color="white"
@@ -75,6 +97,15 @@ const CardPost = ({ image, text, title, typePost, buttonView, link, buttonEdit }
                     size={24}
                 />
             </div>
+
+            <ModalAlert isOpen={isWarningOpen} onClose={onWarningClose}>
+                <h1>Apakah anda yakin ingin menghapus postingan ini ? </h1>
+
+                <div className="flex gap-3 justify-end">
+                    <ButtonSecondary onClick={handleDelete} className='px-4 py-1 rounded-md'>Ya</ButtonSecondary>
+                    <ButtonPrimary onClick={onWarningClose} className='px-4 py-1 rounded-md'>Batal</ButtonPrimary>
+                </div>
+            </ModalAlert>
         </div>
     )
 }

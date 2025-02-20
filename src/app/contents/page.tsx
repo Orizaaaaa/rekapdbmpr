@@ -105,6 +105,7 @@ const Page = (props: Props) => {
                         return (
                             <CardPost
                                 key={index}
+                                idDelete={item.id}
                                 link={url}
                                 buttonView={() => router.push(`/contents/${item.id}`)}
                                 title={item.title}
