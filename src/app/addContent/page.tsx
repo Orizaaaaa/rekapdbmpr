@@ -18,7 +18,7 @@ import { IoIosClose } from 'react-icons/io'
 import { postMediaArray } from '@/api/imagePost'
 import { createContent, socialPlatforms } from '@/api/content'
 import { useRouter } from 'next/navigation'
-
+import toast, { Toaster } from 'react-hot-toast';
 type Props = {}
 
 interface SocialAccount {
@@ -220,45 +220,69 @@ const Page = (props: Props) => {
 
     const handleCreateContent = async () => {
         setLoading(true);
-        // Cek apakah array `form.name` kosong
+
+        // Tampilkan toast loading
+        const toastId = toast.loading("Membuat konten...");
+
+        // Validasi semua field tidak boleh kosong
+        if (
+            !form.title.trim() ||
+            !form.content.trim() ||
+            form.media.length === 0 ||
+            form.hashtags.some(tag => tag.trim() === '') ||
+            form.mentions.some(mention => mention.trim() === '') ||
+            !form.scheduled_at.trim() ||
+            form.social_accounts.some(account => !account.platform.trim() || !account.account_id.trim() || !account.post_url.trim())
+        ) {
+            setLoading(false);
+            toast.dismiss(toastId); // Hapus toast loading
+            toast.error("Harap isi semua data yang diperlukan!", { duration: 4000 });
+            return;
+        }
 
         try {
-            // Kirim gambar dan dapatkan URL-nya
-            const urls: string[] = await postMediaArray({ media: form.media });
+            const urls = await postMediaArray({ media: form.media });
             console.log(urls);
 
-
-            // Buat data baru dengan URL gambar yang telah diunggah
-            const data = {
-                ...form,
-                media: urls,
-            };
-
-            console.log(data);
-
+            const data = { ...form, media: urls };
 
             createContent(data, (status: any, result: any) => {
                 if (status) {
-                    console.log('status', result);
+                    console.log("status", result);
                     setLoading(false);
-                    router.push('/contents');
-                    setForm({
-                        title: '',
-                        content: '',
-                        media: [] as File[],
-                        hashtags: [''], // Default ada satu input kosong
-                        mentions: [''], // Default ada satu input kosong
-                        scheduled_at: '',
-                        social_accounts: [{ platform: '', account_id: '', post_url: '' }],
-                    });
+                    toast.dismiss(toastId); // Hapus toast loading
+                    toast.success("Content sukses di buat", { duration: 1000 });
 
+                    // Tunda perpindahan halaman selama 4 detik
+                    setTimeout(() => {
+                        router.push("/contents");
+                    }, 1000);
+
+                    // Reset form setelah sukses
+                    setForm({
+                        title: "",
+                        content: "",
+                        media: [],
+                        hashtags: [""],
+                        mentions: [""],
+                        scheduled_at: "",
+                        social_accounts: [{ platform: "", account_id: "", post_url: "" }],
+                    });
+                } else {
+                    setLoading(false);
+                    toast.dismiss(toastId); // Hapus toast loading
+                    toast.error("konten gagal di buat", { duration: 1000 });
                 }
             });
         } catch (error) {
-            console.error("Error creating gallery:", error);
+            console.error("Error creating content:", error);
+            setLoading(false);
+            toast.dismiss(toastId); // Hapus toast loading
+            toast.error("An error occurred during the process.", { duration: 1000 });
         }
-
     };
+
+
 
 
     console.log(errorMsg);
@@ -465,8 +489,9 @@ const Page = (props: Props) => {
                 <div className="flex justify-end mt-4">
                     <ButtonPrimary className='py-1 px-4 rounded-lg ' onClick={handleCreateContent}>Kirim</ButtonPrimary>
                 </div>
-
+                <Toaster />
             </Card >
+
         </DefaultLayout >
     )
 }
