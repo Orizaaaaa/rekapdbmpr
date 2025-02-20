@@ -162,10 +162,10 @@ const Page = (props: Props) => {
                 <h1 className='text-xl font-medium '>Postingan </h1>
                 <p className='text-slate-500 text-small mb-3' >{`Semua postingan akan ter rekap di sini, saat ini total postingan adalah ${dataTotal?.data?.totalContent}`} </p>
                 <div className="space-y-3 lg:space-y-0 lg:flex  justify-end gap-2 mt-3 lg:mt-0">
-                    <ButtonSecondary onClick={handleDownload} className=' px-4 rounded-md'>Download dalam bentuk Excel</ButtonSecondary>
+                    <ButtonSecondary onClick={handleDownload} className=' px-4 rounded-md w-full lg:w-auto'>Download dalam bentuk Excel</ButtonSecondary>
                     <DateRangePicker
                         visibleMonths={2}
-                        size='sm' onChange={setDate} value={date} aria-label='datepicker' className="max-w-[284px] bg-bone border-2 border-primary rounded-lg"
+                        size='sm' onChange={setDate} value={date} aria-label='datepicker' className="lg:max-w-[284px] bg-bone border-2 border-primary rounded-lg"
                     />
 
                 </div>
@@ -173,7 +173,7 @@ const Page = (props: Props) => {
                 <Autocomplete
                     aria-label='none'
                     isRequired
-                    className="max-w-xs rounded-lg border-2 "
+                    className="max-w-xs rounded-lg border-2 mt-2 lg:mt-0"
                     defaultItems={socialPlatforms}
                     size='sm'
                     onSelectionChange={handlePlatformChange}
