@@ -11,10 +11,16 @@ import { deleteContent, downloadRekap, getContents, socialPlatforms } from '@/ap
 import Result_ from 'postcss/lib/result'
 import ModalAlert from '@/components/fragemnts/modal/modalAlert'
 import ButtonPrimary from '@/components/elements/buttonPrimary'
+import useSWR from 'swr'
+import { fetcher } from '@/api/fetcher'
+import { url } from '@/api/auth'
 
 type Props = {}
 
 const Page = (props: Props) => {
+    const { data: dataTotal } = useSWR(`${url}/dashboard/summary`, fetcher, {
+        keepPreviousData: true,
+    });
     const dateNow = new Date();
     dateNow.setDate(dateNow.getDate() + 1);
     const [id, setId] = useState('')
@@ -86,13 +92,13 @@ const Page = (props: Props) => {
         })
     }
 
-    console.log(data)
+    console.log(dataTotal)
     return (
 
         <DefaultLayout>
             <Card className='p-3'>
                 <h1 className='text-xl font-medium '>Postingan </h1>
-                <p className='text-slate-500 text-small mb-3' >Semua postingan akan ter rekap di sini, saat ini total postingan adalah 89</p>
+                <p className='text-slate-500 text-small mb-3' >{`Semua postingan akan ter rekap di sini, saat ini total postingan adalah ${dataTotal?.data?.totalContent}`} </p>
                 <div className="space-y-3 lg:space-y-0 lg:flex  justify-end gap-2 mt-3 lg:mt-0">
                     <ButtonSecondary onClick={handleDownload} className=' px-4 rounded-md'>Download dalam bentuk Excel</ButtonSecondary>
                     <DateRangePicker
