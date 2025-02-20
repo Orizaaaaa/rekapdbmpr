@@ -21,6 +21,7 @@ import { Pagination } from 'swiper/modules'
 import { deleteContent } from '@/api/content'
 import ButtonSecondary from '@/components/elements/buttonSecondary'
 import { RiFacebookCircleLine, RiTiktokLine, RiTwitterLine } from 'react-icons/ri'
+import toast, { Toaster } from 'react-hot-toast';
 
 type Props = {}
 
@@ -36,15 +37,42 @@ const Page = (props: Props) => {
         onWarningOpen()
     }
 
-    const handleDelete = () => {
-        deleteContent(id, (result: any) => {
-            console.log(result);
-            if (result) {
-                router.push('/contents')
-            }
 
-        })
-    }
+    const handleDelete = async () => {
+        // Tampilkan toast loading sebelum proses delete dimulai
+        const toastId = toast.loading("Menghapus konten...");
+
+        try {
+            // Panggil fungsi deleteContent
+            deleteContent(id, (result: any) => {
+                console.log(result);
+
+                if (result) {
+                    // Hapus toast loading
+                    toast.dismiss(toastId);
+
+                    // Tampilkan toast sukses
+                    toast.success("Konten berhasil dihapus!", { duration: 1000 });
+
+                    // Redirect ke halaman /contents
+                    router.push('/contents');
+                } else {
+                    // Hapus toast loading
+                    toast.dismiss(toastId);
+
+                    // Tampilkan toast error jika delete gagal
+                    toast.error("Gagal menghapus konten!", { duration: 1000 });
+                }
+            });
+        } catch (error) {
+            // Hapus toast loading
+            toast.dismiss(toastId);
+
+            // Tampilkan toast error jika terjadi exception
+            toast.error("Terjadi kesalahan saat menghapus konten!", { duration: 1000 });
+            console.error("Error deleting content:", error);
+        }
+    };
     const dataArray = data?.data
     console.log(dataArray);
     const socialMedia = (social: string) => {
@@ -146,6 +174,7 @@ const Page = (props: Props) => {
                     >{loadingDelete ? <Spinner className={`w-5 h-5 mx-8`} size="sm" color="white" /> : 'Ya, Hapus'}</ButtonDelete> */}
                 </div>
             </ModalAlert>
+            <Toaster />
         </DefaultLayout >
     )
 }
