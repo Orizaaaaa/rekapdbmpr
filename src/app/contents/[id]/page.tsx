@@ -8,9 +8,9 @@ import { useDisclosure } from '@nextui-org/react'
 import { useParams, useRouter } from 'next/navigation'
 import React from 'react'
 import { CiEdit } from 'react-icons/ci'
-import { FaRegTrashAlt } from 'react-icons/fa'
+import { FaRegTrashAlt, FaUserCircle } from 'react-icons/fa'
 import { PiTrashLight } from "react-icons/pi";
-import { FaFilePen } from 'react-icons/fa6'
+import { FaFilePen, FaInstagram } from 'react-icons/fa6'
 import { IoCloudDownloadOutline, IoLinkSharp } from 'react-icons/io5'
 import { handleCopy } from '@/utils/helper'
 import useSWR from 'swr'
@@ -20,6 +20,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper/modules'
 import { deleteContent } from '@/api/content'
 import ButtonSecondary from '@/components/elements/buttonSecondary'
+import { RiFacebookCircleLine, RiTiktokLine, RiTwitterLine } from 'react-icons/ri'
 
 type Props = {}
 
@@ -46,6 +47,20 @@ const Page = (props: Props) => {
     }
     const dataArray = data?.data
     console.log(dataArray);
+    const socialMedia = (social: string) => {
+        switch (social) {
+            case 'instagram':
+                return <FaInstagram size={40} color='black' />
+            case 'tiktok':
+                return <RiTiktokLine size={40} color='black' />
+            case 'twitter':
+                return <RiTwitterLine size={40} color='black' />
+            case 'facebook':
+                return <RiFacebookCircleLine size={45} color='black' />
+            default:
+                return null
+        }
+    }
 
     return (
         <DefaultLayout>
@@ -77,15 +92,24 @@ const Page = (props: Props) => {
                             </Swiper>
                         </div>
 
-                        <div className="flex items-center gap-5 mt-5">
-                            <FaFilePen color='gray' size={20} />
+
+
+                        <div className="flex">
+                            {dataArray?.social_accounts?.map((item: any, index: number) => (
+                                <a target="_blank" href={item.post_url} key={index} className="flex items-center gap-2 mt-5">
+                                    {socialMedia(item.platform)}
+                                </a>
+                            ))}
+                        </div>
+
+                        <div className="flex items-center gap-2 mt-5">
+                            <FaUserCircle color='gray' size={20} />
                             <p>{dataArray?.user_id?.username}</p>
                         </div>
 
                         <div className="flex justify-between  bg-slate-900 rounded-lg mt-4 p-3">
-                            <IoCloudDownloadOutline color='white' size={24} />
-                            <IoLinkSharp className='cursor-pointer' color='white' size={24} onClick={() => handleCopy('https://akcdn.detik.net.id/visual/2021/02/25/mark-zuckerbergbritannicacom_11.jpeg?w=480&q=90')} />
                             <CiEdit className='cursor-pointer' onClick={() => router.push(`editContent/${id}`)} color='white' size={24} />
+                            <IoLinkSharp className='cursor-pointer' color='white' size={24} onClick={() => handleCopy(dataArray?.social_accounts[0].post_url)} />
                             <PiTrashLight className='cursor-pointer' onClick={openModalDelete} color='white' size={24} />
                         </div>
 
