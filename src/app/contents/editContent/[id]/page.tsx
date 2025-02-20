@@ -16,8 +16,9 @@ import { formatDate, formatDateStr } from '@/utils/helper'
 import { parseDate } from '@internationalized/date'
 import { IoIosClose } from 'react-icons/io'
 import { postMediaArray } from '@/api/imagePost'
-import { createContent, getDetailContent, socialPlatforms, updateContent } from '@/api/content'
+import { getDetailContent, socialPlatforms, updateContent } from '@/api/content'
 import { camera } from '@/app/image'
+import toast, { Toaster } from 'react-hot-toast';
 import { useParams, useRouter } from 'next/navigation'
 
 type Props = {}
@@ -51,7 +52,7 @@ const Page = (props: Props) => {
         hashtags: [''], // Default ada satu input kosong
         mentions: [''], // Default ada satu input kosong
         scheduled_at: '',
-        social_accounts: [{ platform: '', account_id: '', post_url: '' }],
+        social_accounts: [{ platform: '', account_id: '66666', post_url: '' }],
     });
 
     useEffect(() => {
@@ -204,7 +205,7 @@ const Page = (props: Props) => {
     const handleAddSocialAccount = () => {
         setForm((prev: any) => ({
             ...prev,
-            social_accounts: [...prev.social_accounts, { platform: '', account_id: '', post_url: '' }],
+            social_accounts: [...prev.social_accounts, { platform: '', account_id: '6666666', post_url: '' }],
         }));
     };
 
@@ -235,16 +236,26 @@ const Page = (props: Props) => {
 
     // handle update belum
     const handleUpdateContent = async () => {
-        if (form.media.length === 0) {
-            setErrorMsg((prev) => ({
-                ...prev,
-                imageUpdate: '*Gambar tidak boleh kosong',
-            }));
-            setLoading(false);
+        // Validasi semua field yang diperlukan
+        if (
+            !form.title || // Judul tidak boleh kosong
+            !form.content || // Konten tidak boleh kosong
+            form.media.length === 0 || // Media tidak boleh kosong
+            !form.scheduled_at || // Tanggal tidak boleh kosong
+            form.hashtags.length === 0 || // Pastikan ada setidaknya satu hashtag
+            form.mentions.length === 0 || // Pastikan ada setidaknya satu mention
+            form.social_accounts.length === 0 || // Pastikan ada setidaknya satu akun sosial
+            form.social_accounts.some(account => !account.platform || !account.post_url) // Platform dan post_url tidak boleh kosong
+        ) {
+            toast.error("Harap isi semua form", { duration: 4000 });
             return;
         }
 
+        // Lanjutkan proses update jika semua field valid
         setLoading(true);
+
+        // Tampilkan toast loading sebelum update dimulai
+        const toastId = toast.loading("Memperbarui konten...");
 
         // Pisahkan URL lama dan file baru
         const existingUrls = form.media.filter((item: any): item is string => typeof item === 'string');
@@ -262,16 +273,27 @@ const Page = (props: Props) => {
         // Data untuk dikirim ke API
         const data = {
             ...form,
-            media: allUrls, // Perbaikan: Sebelumnya `name`, sekarang `media`
+            media: allUrls,
         };
 
         // Panggil fungsi updateContent
         await updateContent(id, data, (result: any) => {
             console.log("Update berhasil:", result);
             setLoading(false);
-            router.push(`/contents/${id}`)
+            toast.dismiss(toastId); // Hapus toast loading
+            toast.success("Konten sukses di edit", { duration: 1000 });
+
+            // Tunda navigasi agar toast bisa terlihat selama 4 detik
+            setTimeout(() => {
+                router.push(`/contents/${id}`);
+            }, 1000);
         });
     };
+
+
+
+
+
 
 
     console.log(errorMsg);
@@ -488,6 +510,7 @@ const Page = (props: Props) => {
                 </div>
 
             </Card >
+            <Toaster />
         </DefaultLayout >
     )
 }
