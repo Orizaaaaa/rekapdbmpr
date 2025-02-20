@@ -17,6 +17,7 @@ import { parseDate } from '@internationalized/date'
 import { IoIosClose } from 'react-icons/io'
 import { postMediaArray } from '@/api/imagePost'
 import { createContent, socialPlatforms } from '@/api/content'
+import { useRouter } from 'next/navigation'
 
 type Props = {}
 
@@ -38,6 +39,7 @@ interface Content {
 
 
 const Page = (props: Props) => {
+    const router = useRouter()
     const dateNow = new Date();
     const [selectedDate, setSelectedDate] = useState(parseDate((formatDate(dateNow))))
     const [form, setForm] = React.useState<Content>({
@@ -239,6 +241,7 @@ const Page = (props: Props) => {
                 if (status) {
                     console.log('status', result);
                     setLoading(false);
+                    router.push('/contents');
                     setForm({
                         title: '',
                         content: '',

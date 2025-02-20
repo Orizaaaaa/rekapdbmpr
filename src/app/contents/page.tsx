@@ -3,28 +3,22 @@ import ButtonSecondary from '@/components/elements/buttonSecondary'
 import DefaultLayout from '@/components/layouts/DefaultLayout'
 import { dateFirst, formatDate, formatDateStr } from '@/utils/helper'
 import { parseDate } from '@internationalized/date'
-import { Autocomplete, AutocompleteItem, Card, DateRangePicker } from '@nextui-org/react'
-import React, { useEffect, useState } from 'react'
+import { Autocomplete, AutocompleteItem, Card, DateRangePicker, useDisclosure } from '@nextui-org/react'
+import React, { use, useEffect, useState } from 'react'
 import CardPost from '@/components/fragemnts/cardPost/CardPost'
 import { useRouter } from 'next/navigation'
-import { downloadRekap, getContents, socialPlatforms } from '@/api/content'
+import { deleteContent, downloadRekap, getContents, socialPlatforms } from '@/api/content'
 import Result_ from 'postcss/lib/result'
+import ModalAlert from '@/components/fragemnts/modal/modalAlert'
+import ButtonPrimary from '@/components/elements/buttonPrimary'
 
 type Props = {}
 
 const Page = (props: Props) => {
     const dateNow = new Date();
     dateNow.setDate(dateNow.getDate() + 1);
+    const [id, setId] = useState('')
     const [data, setData] = useState([])
-    const [form, setForm] = React.useState({
-        name: [] as File[],
-        link: '',
-        description: '',
-        typeContent: 'instagram'
-    })
-    // const { data } = useSWR(`${url}/account/list`, fetcher, {
-    //     keepPreviousData: true,
-    // });
     const router = useRouter()
     let [date, setDate] = React.useState({
         start: parseDate((formatDate(dateFirst))),
@@ -67,7 +61,30 @@ const Page = (props: Props) => {
             }
         });
     };
-    console.log(startDate, endDate);
+
+
+    const { isOpen: isWarningOpen, onOpen: onWarningOpen, onClose: onWarningClose } = useDisclosure();
+
+    const openModalDelete = (id: string) => {
+        setId(id)
+        onWarningOpen()
+    }
+
+    const handleDelete = async () => {
+        await deleteContent(id, (result: any) => {
+            console.log(result);
+            if (result) {
+                getContents(startDate, endDate, (result: any) => {
+                    setData(result.data);
+                    console.log(result.data);
+
+                });
+                onWarningClose()
+
+            }
+
+        })
+    }
 
     console.log(data)
     return (
@@ -106,6 +123,7 @@ const Page = (props: Props) => {
 
                         return (
                             <CardPost
+                                buttonModalAlert={() => openModalDelete(item.id)}
                                 key={index}
                                 idDelete={item.id}
                                 link={url}
@@ -124,6 +142,14 @@ const Page = (props: Props) => {
                 </div>
 
             </div>
+            <ModalAlert isOpen={isWarningOpen} onClose={onWarningClose}>
+                <h1>Apakah anda yakin ingin menghapus postingan ini ? </h1>
+
+                <div className="flex gap-3 justify-end">
+                    <ButtonSecondary onClick={handleDelete} className='px-4 py-1 rounded-md'>Ya</ButtonSecondary>
+                    <ButtonPrimary onClick={onWarningClose} className='px-4 py-1 rounded-md'>Batal</ButtonPrimary>
+                </div>
+            </ModalAlert>
 
         </DefaultLayout>
 

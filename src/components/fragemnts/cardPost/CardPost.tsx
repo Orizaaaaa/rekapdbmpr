@@ -17,30 +17,16 @@ type Props = {
     text: string
     typePost: string
     buttonView?: () => void
+    buttonModalAlert: any
     title: string
     buttonEdit: any
     link?: string
     idDelete: string
 }
 
-const CardPost = ({ image, text, title, typePost, buttonView, link, buttonEdit, idDelete }: Props) => {
+const CardPost = ({ image, text, title, typePost, buttonView, link, buttonEdit, idDelete, buttonModalAlert }: Props) => {
+
     const router = useRouter()
-    const { isOpen: isWarningOpen, onOpen: onWarningOpen, onClose: onWarningClose } = useDisclosure();
-
-    const openModalDelete = () => {
-        onWarningOpen()
-    }
-    const handleDelete = () => {
-        deleteContent(idDelete, (result: any) => {
-            console.log(result);
-            if (result) {
-                console.log(result);
-                router.push('/contents')
-            }
-
-        })
-    }
-
     const socialMedia = (social: string) => {
         switch (social) {
             case 'instagram':
@@ -83,7 +69,7 @@ const CardPost = ({ image, text, title, typePost, buttonView, link, buttonEdit, 
 
             {/* Action Buttons */}
             <div className="flex justify-between bg-slate-900 rounded-lg p-3 mt-auto">
-                <FaRegTrashAlt className="cursor-pointer" color="white" size={24} onClick={openModalDelete} />
+                <FaRegTrashAlt className="cursor-pointer" color="white" size={24} onClick={buttonModalAlert} />
                 <IoLinkSharp
                     className="cursor-pointer"
                     color="white"
@@ -98,14 +84,7 @@ const CardPost = ({ image, text, title, typePost, buttonView, link, buttonEdit, 
                 />
             </div>
 
-            <ModalAlert isOpen={isWarningOpen} onClose={onWarningClose}>
-                <h1>Apakah anda yakin ingin menghapus postingan ini ? </h1>
 
-                <div className="flex gap-3 justify-end">
-                    <ButtonSecondary onClick={handleDelete} className='px-4 py-1 rounded-md'>Ya</ButtonSecondary>
-                    <ButtonPrimary onClick={onWarningClose} className='px-4 py-1 rounded-md'>Batal</ButtonPrimary>
-                </div>
-            </ModalAlert>
         </div>
     )
 }
