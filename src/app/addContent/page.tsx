@@ -236,7 +236,7 @@ const Page = (props: Props) => {
         ) {
             setLoading(false);
             toast.dismiss(toastId); // Hapus toast loading
-            toast.error("Harap isi semua data yang diperlukan!", { duration: 4000 });
+            toast.error("Harap isi semua form", { duration: 4000 });
             return;
         }
 
