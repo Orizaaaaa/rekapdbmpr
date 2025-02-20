@@ -5,12 +5,7 @@ import { RiFacebookCircleLine, RiTiktokLine, RiTwitterLine } from 'react-icons/r
 import { CiEdit } from 'react-icons/ci'
 import { formatDate, formatDatePost, formatText, handleCopy } from '@/utils/helper'
 import { useRouter } from 'next/navigation'
-import ModalAlert from '../modal/modalAlert'
-import ButtonSecondary from '@/components/elements/buttonSecondary'
-import ButtonPrimary from '@/components/elements/buttonPrimary'
-import { useDisclosure } from '@nextui-org/react'
-import { deleteContent } from '@/api/content'
-import { FaRegTrashAlt } from 'react-icons/fa'
+import { TfiTrash } from "react-icons/tfi";
 
 type Props = {
     image: string
@@ -53,7 +48,7 @@ const CardPost = ({ image, text, title, typePost, buttonView, link, buttonEdit, 
             <div className="content flex flex-col flex-1 p-2">
                 <h1 className="text-md font-medium">{formatText(title, 30)}</h1>
                 <p className="text-sm flex-1">{formatText(text, 70)}</p>
-                <p className='text-small text-gray' >{formatDatePost('2025-02-20T00:00:00.000Z')}</p>
+                <p className='text-sm text-gray' >{formatDatePost('2025-02-20T00:00:00.000Z')}</p>
                 <div className="flex justify-between items-center mt-3">
                     <a target="_blank" href={link} className="w-10 h-10">
                         {socialMedia(typePost)}
@@ -69,19 +64,19 @@ const CardPost = ({ image, text, title, typePost, buttonView, link, buttonEdit, 
 
             {/* Action Buttons */}
             <div className="flex justify-between bg-slate-900 rounded-lg p-3 mt-auto">
-                <FaRegTrashAlt className="cursor-pointer" color="white" size={24} onClick={buttonModalAlert} />
-                <IoLinkSharp
-                    className="cursor-pointer"
-                    color="white"
-                    size={24}
-                    onClick={() => handleCopy('https://akcdn.detik.net.id/visual/2021/02/25/mark-zuckerbergbritannicacom_11.jpeg?w=480&q=90')}
-                />
                 <CiEdit
                     className="cursor-pointer"
                     onClick={() => router.push(`contents/editContent/${buttonEdit}`)}
                     color="white"
                     size={24}
                 />
+                <IoLinkSharp
+                    className="cursor-pointer"
+                    color="white"
+                    size={24}
+                    onClick={() => handleCopy(`${link}`)}
+                />
+                <TfiTrash className="cursor-pointer" color="white" size={24} onClick={buttonModalAlert} />
             </div>
 
 
