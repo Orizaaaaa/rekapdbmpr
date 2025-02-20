@@ -237,7 +237,7 @@ const Page = (props: Props) => {
 
             createContent(data, (status: any, result: any) => {
                 if (status) {
-                    console.log(result);
+                    console.log('status', result);
                     setLoading(false);
                     setForm({
                         title: '',
@@ -329,7 +329,7 @@ const Page = (props: Props) => {
                                 onChange={(e) => handleMediaChange(e, 'add')}
                             />
                         </ButtonPrimary>
-                        <ButtonSecondary className='rounded-md  py-2 px-1' onClick={() => setForm(prevForm => ({ ...prevForm, media: [] }))} >Hapus Semua Media</ButtonSecondary>
+                        <ButtonSecondary className='rounded-md  py-2 px-1' onClick={() => setForm(prevForm => ({ ...prevForm, media: [] as File[] }))} >Hapus Semua Media</ButtonSecondary>
                     </div>
 
                 </div>

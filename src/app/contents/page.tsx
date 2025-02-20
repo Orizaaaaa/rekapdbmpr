@@ -66,6 +66,7 @@ const Page = (props: Props) => {
             }
         });
     };
+    console.log(startDate, endDate);
 
     console.log(data)
     return (
