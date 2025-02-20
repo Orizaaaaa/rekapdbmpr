@@ -75,5 +75,17 @@ export const getFirstDayOfMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth(), 1);
 };
 
+export function formatDatePost(isoString: string): string {
+    const date = new Date(isoString);
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() dimulai dari 0
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+
+    return `${month}/${day}/${year}`;
+}
+
+// Contoh penggunaan
+console.log(formatDate("2025-02-20T00:00:00.000Z")); // Output: 02/20/2025
+
 const dateNow = new Date();
 export const dateFirst = getFirstDayOfMonth(dateNow);

@@ -14,6 +14,7 @@ type Props = {}
 
 const Page = (props: Props) => {
     const dateNow = new Date();
+    dateNow.setDate(dateNow.getDate() + 1);
     const [data, setData] = useState([])
     const [form, setForm] = React.useState({
         name: [] as File[],

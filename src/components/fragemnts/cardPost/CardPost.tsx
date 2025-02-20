@@ -3,7 +3,7 @@ import { FaInstagram, FaTrashCan } from 'react-icons/fa6'
 import { IoCloudDownloadOutline, IoLinkSharp } from 'react-icons/io5'
 import { RiFacebookCircleLine, RiTiktokLine, RiTwitterLine } from 'react-icons/ri'
 import { CiEdit } from 'react-icons/ci'
-import { formatText, handleCopy } from '@/utils/helper'
+import { formatDate, formatDatePost, formatText, handleCopy } from '@/utils/helper'
 import { useRouter } from 'next/navigation'
 import ModalAlert from '../modal/modalAlert'
 import ButtonSecondary from '@/components/elements/buttonSecondary'
@@ -67,7 +67,7 @@ const CardPost = ({ image, text, title, typePost, buttonView, link, buttonEdit, 
             <div className="content flex flex-col flex-1 p-2">
                 <h1 className="text-md font-medium">{formatText(title, 30)}</h1>
                 <p className="text-sm flex-1">{formatText(text, 70)}</p>
-
+                <p className='text-small text-gray' >{formatDatePost('2025-02-20T00:00:00.000Z')}</p>
                 <div className="flex justify-between items-center mt-3">
                     <a target="_blank" href={link} className="w-10 h-10">
                         {socialMedia(typePost)}
