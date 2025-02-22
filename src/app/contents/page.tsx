@@ -147,7 +147,7 @@ const Page = (props: Props) => {
     };
 
     const filteredData = dataTotal
-        ? data.filter((item: Post) =>
+        ? data?.filter((item: Post) =>
             selectedPlatform === null // Jika tidak ada platform yang dipilih
                 ? true // Tampilkan semua data
                 : item?.social_accounts?.some((account: SocialAccount) => account?.platform === selectedPlatform) // Filter berdasarkan platform
