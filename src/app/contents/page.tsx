@@ -109,10 +109,14 @@ const Page = (props: Props) => {
             await deleteContent(id, (result: any) => {
                 console.log(result);
 
-                if (result) {
-                    // Hapus toast loading
-                    toast.dismiss(toastId);
+                // Hapus toast loading
+                toast.dismiss(toastId);
 
+                if (result?.response?.data.message === "Content not found") {
+                    // Tampilkan toast khusus jika konten tidak ditemukan atau bukan milik user
+                    toast.error("Kamu tidak dapat menghapus postingan orang lain!", { duration: 4000 });
+                    onWarningClose();
+                } else if (result) {
                     // Tampilkan toast sukses
                     toast.success("Konten berhasil dihapus!", { duration: 4000 });
 
@@ -125,9 +129,6 @@ const Page = (props: Props) => {
                     // Tutup modal atau tampilan peringatan
                     onWarningClose();
                 } else {
-                    // Hapus toast loading
-                    toast.dismiss(toastId);
-
                     // Tampilkan toast error jika delete gagal
                     toast.error("Gagal menghapus konten!", { duration: 4000 });
                 }
@@ -141,6 +142,7 @@ const Page = (props: Props) => {
             console.error("Error deleting content:", error);
         }
     };
+
     const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
     const handlePlatformChange = (value: any) => {
         setSelectedPlatform(value);
